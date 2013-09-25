@@ -14,8 +14,8 @@
                 <MenuItem x:Name="Exit" Header="_Exit" Click="MenuItem_exit" />
             </MenuItem>
         </Menu>
-        <Grid Name="EditorGrid" HorizontalAlignment="Left" Height="440" Margin="175,23,0,0" VerticalAlignment="Top" Width="557" Background="White"/>
+        <Grid Name="EditorGrid" HorizontalAlignment="Left" Height="425" Margin="175,23,0,0" VerticalAlignment="Top" Width="550" Background="White"/>
         <TreeView Name="ComponentsTreeView" HorizontalAlignment="Left" Height="336" Margin="10,23,0,0" VerticalAlignment="Top" Width="147"/>
-        <ListBox Height="100" Margin="10,363,585,10"/>
+        <ListBox Margin="10,363,585,25"/>
     </Grid>
 </Window>
