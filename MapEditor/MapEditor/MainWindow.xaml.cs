@@ -27,7 +27,6 @@ namespace MapEditor
 	{
 		private const int pixelWidth = 25;
 		private const int pixelHeight = 25;
-        JSON jsonFile = new JSON();
 
 		public MainWindow()
 		{
@@ -150,18 +149,20 @@ namespace MapEditor
         private void MenuItem_new(object sender, RoutedEventArgs e)
         {
             var url = "{\"tiles\": [{\"id\":1, \"isObstacle\":true}]}";
-
-
         }
         private void MenuItem_save(object sender, RoutedEventArgs e)
         {
             int size = (int)((EditorGrid.Height / pixelHeight) * (EditorGrid.Width / pixelWidth));
+
+            JSON jsonFile = new JSON(size);
 
             for (int i = 0; i < size; i++)
             {
                 jsonFile.tiles[i].id = i;
                 jsonFile.tiles[i].isObstacle = (0 == i % 2) ? true : false;
             }
+
+            Console.WriteLine(toJSON(jsonFile));
         }
         private void MenuItem_load(object sender, RoutedEventArgs e)
         {
@@ -198,7 +199,7 @@ namespace MapEditor
 
             for (int i = 0; i < j.tiles.Length; i++)
             {
-                ret += "{\"id\"" + j.tiles[i].id + ",\"isObstacle\":" + j.tiles[i].isObstacle;
+                ret += "{\"id\":" + j.tiles[i].id + ",\"isObstacle\":" + j.tiles[i].isObstacle + "}";
             }
 
             ret += "]}";

@@ -16,6 +16,16 @@ namespace MapEditor
     class JSON
     {
         public Tile[] tiles { get; set; }
+
+        public JSON(int size)
+        {
+            tiles = new Tile[size];
+
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                tiles[i] = new Tile();
+            }
+        }
     }
 }
 
