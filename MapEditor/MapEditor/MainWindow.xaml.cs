@@ -52,7 +52,7 @@ namespace MapEditor
 				}
 			}
 			AddToAssetDatabase("Gress","Landskap", @"C:\\ToolsProgramming\\MapEditor\\MapEditor\\grassTile.jpg");
-
+            
 			LinqToAssetDataContext Assets = new LinqToAssetDataContext();
 
 			var AssetData = (
@@ -60,10 +60,7 @@ namespace MapEditor
 				where asset.Id == 1
 				select asset);
 			
-
-
-
-			AddToTree(AssetData.First());
+			//AddToTree(AssetData.First());
 			TreeViewItem colorItem = new TreeViewItem();
 			colorItem.Header = "Color";
 			ComponentsTreeView.Items.Add(colorItem);
