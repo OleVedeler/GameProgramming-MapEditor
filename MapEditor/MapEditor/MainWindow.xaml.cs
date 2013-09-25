@@ -49,18 +49,8 @@ namespace MapEditor
 					EditorGrid.Children.Add(temp);
 				}
 			}
-			
-			
-			LinqToAssetDataContext assetsDataContext = new LinqToAssetDataContext();
-
-			Asset Gress = new Asset();
-
-			Gress.Name = "Gress";
-			Gress.Parent = "Landskap";
-			BitmapImage GressImage = new BitmapImage(new Uri("C:\\ToolsProgrammering\\MapEditor\\MapEditor\\grassTile.jpg"));
-			Gress.Image = convertBitmapImageToBytestream(GressImage);
-
-
+			AddToAssetDatabase("Gress","Landskap", "C:\\ToolsProgrammering\\MapEditor\\MapEditor\\grassTile.jpg");
+		
 			TreeViewItem colorItem = new TreeViewItem();
 			colorItem.Header = "Color";
 			ComponentsTreeView.Items.Add(colorItem);
@@ -76,6 +66,21 @@ namespace MapEditor
 			TreeViewItem greenItem = new TreeViewItem();
 			greenItem.Header = "Green";
 			colorItem.Items.Add(greenItem);
+		}
+
+		private void AddToAssetDatabase(string name, string parent, string fileName)
+		{
+			LinqToAssetDataContext assetsDataContext = new LinqToAssetDataContext();
+			Asset newAsset = new Asset();
+			BitmapImage bitmapImage = new BitmapImage(new Uri(fileName));
+			
+			newAsset.Name = name;
+			newAsset.Parent = parent;
+			
+			newAsset.Image = convertBitmapImageToBytestream(bitmapImage);
+
+			assetsDataContext.Assets.InsertOnSubmit(newAsset);
+			assetsDataContext.SubmitChanges();
 		}
 
 		private void ColourGrid(Object o, MouseEventArgs e)
