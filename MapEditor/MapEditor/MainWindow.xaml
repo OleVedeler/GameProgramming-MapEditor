@@ -4,7 +4,7 @@
         Title="MainWindow" Height="500" Width="750">
     <Grid>
         <Menu IsMainMenu="True">
-            <MenuItem Header="_File">
+            <MenuItem Header="_File" Background="{x:Null}">
                 <MenuItem x:Name="New" Header="_New" Command="New" Click="MenuItem_new" />
                 <MenuItem x:Name="Save" Header="_Save" Command="Save" Click="MenuItem_save" />
                 <MenuItem x:Name="Load" Header="_Load" Command="Open" Click="MenuItem_load" />
@@ -14,7 +14,8 @@
                 <MenuItem x:Name="Exit" Header="_Exit" Click="MenuItem_exit" />
             </MenuItem>
         </Menu>
-        <Grid Name="EditorGrid" HorizontalAlignment="Left" Height="440" Margin="175,23,0,0" VerticalAlignment="Top" Width="557"/>
+        <Grid Name="EditorGrid" HorizontalAlignment="Left" Height="440" Margin="175,23,0,0" VerticalAlignment="Top" Width="557" Background="White"/>
         <TreeView Name="ComponentsTreeView" HorizontalAlignment="Left" Height="336" Margin="10,23,0,0" VerticalAlignment="Top" Width="147"/>
+        <ListBox Height="100" Margin="10,363,585,10"/>
     </Grid>
 </Window>
