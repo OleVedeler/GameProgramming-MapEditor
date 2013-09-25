@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,6 +27,7 @@ namespace MapEditor
 	{
 		private const int pixelWidth = 25;
 		private const int pixelHeight = 25;
+        JSON jsonFile = new JSON();
 
 		public MainWindow()
 		{
@@ -49,7 +52,7 @@ namespace MapEditor
 					EditorGrid.Children.Add(temp);
 				}
 			}
-			AddToAssetDatabase("Gress","Landskap", "C:\\ToolsProgrammering\\MapEditor\\MapEditor\\grassTile.jpg");
+			AddToAssetDatabase("Gress","Landskap", @"C:\\ToolsProgramming\\MapEditor\\MapEditor\\grassTile.jpg");
 
 			TreeViewItem colorItem = new TreeViewItem();
 			colorItem.Header = "Color";
@@ -146,11 +149,19 @@ namespace MapEditor
 
         private void MenuItem_new(object sender, RoutedEventArgs e)
         {
+            var url = "{\"tiles\": [{\"id\":1, \"isObstacle\":true}]}";
+
 
         }
         private void MenuItem_save(object sender, RoutedEventArgs e)
         {
+            int size = (int)((EditorGrid.Height / pixelHeight) * (EditorGrid.Width / pixelWidth));
 
+            for (int i = 0; i < size; i++)
+            {
+                jsonFile.tiles[i].id = i;
+                jsonFile.tiles[i].isObstacle = (0 == i % 2) ? true : false;
+            }
         }
         private void MenuItem_load(object sender, RoutedEventArgs e)
         {
@@ -163,6 +174,36 @@ namespace MapEditor
         private void MenuItem_exit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private static T _download_serialized_json_data<T>(string url) where T : new()
+        {
+            using (var w = new WebClient())
+            {
+                var json_data = string.Empty;
+                // attempt to download JSON data as a string
+                try
+                {
+                    json_data = w.DownloadString(url);
+                }
+                catch (Exception) { }
+                // if string with JSON data is not empty, deserialize it to class and return its instance 
+                return !string.IsNullOrEmpty(json_data) ? JsonConvert.DeserializeObject<T>(json_data) : new T();
+            }
+        }
+
+        private String toJSON(JSON j)
+        {
+            String ret = "{\"tiles\": [";
+
+            for (int i = 0; i < j.tiles.Length; i++)
+            {
+                ret += "{\"id\"" + j.tiles[i].id + ",\"isObstacle\":" + j.tiles[i].isObstacle;
+            }
+
+            ret += "]}";
+
+            return ret;
         }
 	}
 }
