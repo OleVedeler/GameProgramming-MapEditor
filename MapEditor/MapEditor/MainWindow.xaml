@@ -1,13 +1,13 @@
 ﻿<Window x:Class="MapEditor.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="500" Width="750">
+        Title="MainWindow" Height="500" Width="750" ResizeMode="NoResize" >
     <Grid>
         <Menu IsMainMenu="True">
-            <MenuItem Header="_File" Background="{x:Null}">
-                <MenuItem x:Name="New" Header="_New" Command="New" Click="MenuItem_new" />
-                <MenuItem x:Name="Save" Header="_Save" Command="Save" Click="MenuItem_save" />
-                <MenuItem x:Name="Load" Header="_Load" Command="Open" Click="MenuItem_load" />
+            <MenuItem Header="_File" >
+                <MenuItem x:Name="New" Header="_New" Click="MenuItem_new" />
+                <MenuItem x:Name="Save" Header="_Save" Click="MenuItem_save" />
+                <MenuItem x:Name="Load" Header="_Load" Click="MenuItem_load" />
                 <Separator />
                 <MenuItem x:Name="Import" Header="_Import Asset" Click="MenuItem_import" />
                 <Separator />
@@ -16,6 +16,8 @@
         </Menu>
         <Grid Name="EditorGrid" HorizontalAlignment="Left" Height="425" Margin="175,23,0,0" VerticalAlignment="Top" Width="550" Background="White"/>
         <TreeView Name="ComponentsTreeView" HorizontalAlignment="Left" Height="336" Margin="10,23,0,0" VerticalAlignment="Top" Width="147"/>
-        <ListBox Margin="10,363,585,25"/>
+        <ListBox Margin="10,363,585,25">
+            <TextBox x:Name="DebugText" Height="23" TextWrapping="Wrap" Text="TextBox" Width="120"/>
+        </ListBox>
     </Grid>
 </Window>

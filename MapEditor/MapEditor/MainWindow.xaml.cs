@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -61,7 +62,7 @@ namespace MapEditor
 		/// Kommer mest sannsynlig til skrive om koden igjen når jeg er mer edru og har tid.
 		/// </summary>
 		/// <param name="newAsset">Er en database rad</param>
-
+			
 		private void AddToTree(Asset newAsset)
 		{
 			TreeViewItem newItem = new TreeViewItem();
@@ -82,8 +83,8 @@ namespace MapEditor
 			for (int i = 0; i < ComponentsTreeView.Items.Count; i++)
 			{
 				Testing.Add((TreeViewItem)ComponentsTreeView.Items[i]);
-			}
-			
+		}
+
 			bool parentExists = false;
 			// Tester om parenten finnes, hvis ikke setter vi et flag som sier fra at den ikke finnes
 			for (int i = 0; i < ComponentsTreeView.Items.Count; i++)
@@ -93,7 +94,7 @@ namespace MapEditor
 					((TreeViewItem)ComponentsTreeView.Items[i]).Items.Add(newItem);
 					parentExists = true;
 					break;
-				}
+				}	
 			}
 			// setter parenten og barne hvis flaget er satt
 			if (!parentExists)
@@ -170,11 +171,21 @@ namespace MapEditor
 
         private void MenuItem_new(object sender, RoutedEventArgs e)
         {
-
+            var url = "{\"tiles\": [{\"id\":1, \"isObstacle\":true}]}";
         }
         private void MenuItem_save(object sender, RoutedEventArgs e)
         {
+            int size = (int)((EditorGrid.Height / pixelHeight) * (EditorGrid.Width / pixelWidth));
 
+            JSON jsonFile = new JSON(size);
+
+            for (int i = 0; i < size; i++)
+            {
+                jsonFile.tiles[i].id = i;
+                jsonFile.tiles[i].isObstacle = (0 == i % 2) ? true : false;
+        }
+
+            Console.WriteLine(toJSON(jsonFile));
         }
         private void MenuItem_load(object sender, RoutedEventArgs e)
         {
@@ -192,19 +203,34 @@ namespace MapEditor
             Application.Current.Shutdown();
         }
 
-		private void UpdateTreeView()
-		{
-			
-			ComponentsTreeView.Items.Clear();
-			LinqToAssetDataContext assetsDataContext = new LinqToAssetDataContext();
+        private static T _download_serialized_json_data<T>(string url) where T : new()
+        {
+            using (var w = new WebClient())
+            {
+                var json_data = string.Empty;
+                // attempt to download JSON data as a string
+                try
+                {
+                    json_data = w.DownloadString(url);
+                }
+                catch (Exception) { }
+                // if string with JSON data is not empty, deserialize it to class and return its instance 
+                return !string.IsNullOrEmpty(json_data) ? JsonConvert.DeserializeObject<T>(json_data) : new T();
+            }
+        }
 
-			var assetData = (
-				from asset in assetsDataContext.Assets
-				select asset);
+        private String toJSON(JSON j)
+        {
+            String ret = "{\"tiles\": [";
 
-			using (var enumerator = assetData.GetEnumerator())
-				while (enumerator.MoveNext())
-					AddToTree(enumerator.Current);
-		}
+            for (int i = 0; i < j.tiles.Length; i++)
+            {
+                ret += "{\"id\":" + j.tiles[i].id + ",\"isObstacle\":" + j.tiles[i].isObstacle + "}";
+            }
+
+            ret += "]}";
+
+            return ret;
+        }
 	}
 }
