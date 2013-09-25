@@ -84,5 +84,26 @@ namespace MapEditor
 					temp.Background = Brushes.Green;
 			}
 		}
+
+        private void MenuItem_new(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void MenuItem_save(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void MenuItem_load(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void MenuItem_import(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void MenuItem_exit(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
 	}
 }
