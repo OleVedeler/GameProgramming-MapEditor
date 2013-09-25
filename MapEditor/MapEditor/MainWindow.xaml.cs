@@ -53,6 +53,17 @@ namespace MapEditor
 			}
 			AddToAssetDatabase("Gress","Landskap", @"C:\\ToolsProgramming\\MapEditor\\MapEditor\\grassTile.jpg");
 
+			LinqToAssetDataContext Assets = new LinqToAssetDataContext();
+
+			var AssetData = (
+				from asset in Assets.Assets
+				where asset.Id == 1
+				select asset);
+			
+
+
+
+			AddToTree(AssetData.First());
 			TreeViewItem colorItem = new TreeViewItem();
 			colorItem.Header = "Color";
 			ComponentsTreeView.Items.Add(colorItem);
@@ -74,9 +85,22 @@ namespace MapEditor
 		{
 			TreeViewItem newItem = new TreeViewItem();
 			newItem.Header = newAsset.Name;
-			//for (int i = 0; i < UPPER; i++)
+			bool exists = false;
+			for (int i = 0; i < 10; i++)
 			{
-				//ComponentsTreeView. .Items.Add(greenItem);	
+				if (((TreeViewItem) ComponentsTreeView.Items[i]).Header == newAsset.Parent)
+				{
+					((TreeViewItem) ComponentsTreeView.Items[i]).Items.Add(newAsset);
+					exists = true;
+					break;
+				}	
+			}
+
+			if (!exists)
+			{
+				TreeViewItem parentItem = new TreeViewItem();
+				parentItem.Header = newAsset.Parent;
+				ComponentsTreeView.Items.Add(parentItem);
 			}
 			
 		}
