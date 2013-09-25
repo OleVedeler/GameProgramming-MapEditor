@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -49,58 +51,56 @@ namespace MapEditor
 					EditorGrid.Children.Add(temp);
 				}
 			}
-			AddToAssetDatabase("Gress","Landskap", "C:\\ToolsProgrammering\\MapEditor\\MapEditor\\grassTile.jpg");
 
-			LinqToAssetDataContext Assets = new LinqToAssetDataContext();
-
-			var AssetData = (
-				from asset in Assets.Assets
-				where asset.Id == 1
-				select asset);
-			
-
-
-
-			AddToTree(AssetData.First());
-			TreeViewItem colorItem = new TreeViewItem();
-			colorItem.Header = "Color";
-			ComponentsTreeView.Items.Add(colorItem);
-
-			TreeViewItem redItem = new TreeViewItem();
-			redItem.Header = "Red";
-			colorItem.Items.Add(redItem);
-
-			TreeViewItem blueItem = new TreeViewItem();
-			blueItem.Header = "Blue";
-			colorItem.Items.Add(blueItem);
-
-			TreeViewItem greenItem = new TreeViewItem();
-			greenItem.Header = "Green";
-			colorItem.Items.Add(greenItem);
+			UpdateTreeView();
 		}
+
+		/// <summary>
+		/// Legger DatabaseObjekter inn til TreeViewet. 
+		/// ikke Superheit kode, men har sittet 6 timer med dette og det funker.
+		/// Kommer mest sannsynlig til skrive om koden igjen når jeg er mer edru og har tid.
+		/// </summary>
+		/// <param name="newAsset">Er en database rad</param>
 
 		private void AddToTree(Asset newAsset)
 		{
 			TreeViewItem newItem = new TreeViewItem();
 			newItem.Header = newAsset.Name;
-			bool exists = false;
-			for (int i = 0; i < 10; i++)
-			{
-				if (((TreeViewItem) ComponentsTreeView.Items[i]).Header == newAsset.Parent)
-				{
-					((TreeViewItem) ComponentsTreeView.Items[i]).Items.Add(newAsset);
-					exists = true;
-					break;
-				}	
-			}
 
-			if (!exists)
+			TreeViewItem parentItem = new TreeViewItem();
+			parentItem.Header = newAsset.Parent;
+			
+			// For å kunne compare, Burde kunne gjøres bedre, men fant ingen enkel måte
+			List<TreeViewItem> Testing = new List<TreeViewItem>();
+
+			// Leger inn det første elementet hvis, den er tom. Burde kunne implementeres inni loopen
+			if (ComponentsTreeView.Items.Count == 0)
 			{
-				TreeViewItem parentItem = new TreeViewItem();
-				parentItem.Header = newAsset.Parent;
 				ComponentsTreeView.Items.Add(parentItem);
 			}
+			// Legger treet inn i listen
+			for (int i = 0; i < ComponentsTreeView.Items.Count; i++)
+			{
+				Testing.Add((TreeViewItem)ComponentsTreeView.Items[i]);
+			}
 			
+			bool parentExists = false;
+			// Tester om parenten finnes, hvis ikke setter vi et flag som sier fra at den ikke finnes
+			for (int i = 0; i < ComponentsTreeView.Items.Count; i++)
+			{
+				if ((Testing[i].Header.Equals(parentItem.Header)))
+				{
+					((TreeViewItem)ComponentsTreeView.Items[i]).Items.Add(newItem);
+					parentExists = true;
+					break;
+				}
+			}
+			// setter parenten og barne hvis flaget er satt
+			if (!parentExists)
+			{
+				ComponentsTreeView.Items.Add(parentItem);
+				parentItem.Items.Add(newItem);
+			}
 		}
 
 		private void AddToAssetDatabase(string name, string parent, string fileName)
@@ -183,10 +183,28 @@ namespace MapEditor
         private void MenuItem_import(object sender, RoutedEventArgs e)
         {
 
+			AddToAssetDatabase("lett vann", "Vann", "C:\\ToolsProgrammering\\MapEditor\\MapEditor\\grassTile.jpg");
+			UpdateTreeView();
+
         }
         private void MenuItem_exit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
+
+		private void UpdateTreeView()
+		{
+			
+			ComponentsTreeView.Items.Clear();
+			LinqToAssetDataContext assetsDataContext = new LinqToAssetDataContext();
+
+			var assetData = (
+				from asset in assetsDataContext.Assets
+				select asset);
+
+			using (var enumerator = assetData.GetEnumerator())
+				while (enumerator.MoveNext())
+					AddToTree(enumerator.Current);
+		}
 	}
 }
