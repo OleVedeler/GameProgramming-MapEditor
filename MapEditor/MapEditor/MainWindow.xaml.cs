@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +18,6 @@ using System.Windows.Shapes;
 
 namespace MapEditor
 {
-
-
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
@@ -29,7 +28,6 @@ namespace MapEditor
 
 		public MainWindow()
 		{
-
 			InitializeComponent();
 			EditorGrid.Background = Brushes.Black;
 			for (int coloum = 0; coloum < 50; coloum++)
@@ -51,6 +49,17 @@ namespace MapEditor
 					EditorGrid.Children.Add(temp);
 				}
 			}
+			
+			
+			LinqToAssetDataContext assetsDataContext = new LinqToAssetDataContext();
+
+			Asset Gress = new Asset();
+
+			Gress.Name = "Gress";
+			Gress.Parent = "Landskap";
+			BitmapImage GressImage = new BitmapImage(new Uri("C:\\ToolsProgrammering\\MapEditor\\MapEditor\\grassTile.jpg"));
+			Gress.Image = convertBitmapImageToBytestream(GressImage);
+
 
 			TreeViewItem colorItem = new TreeViewItem();
 			colorItem.Header = "Color";
@@ -84,5 +93,40 @@ namespace MapEditor
 					temp.Background = Brushes.Green;
 			}
 		}
+
+		public static Byte[] convertBitmapImageToBytestream(BitmapImage bi)
+		{
+			MemoryStream memStream = new MemoryStream();
+			JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+			encoder.Frames.Add(BitmapFrame.Create(bi));
+			encoder.Save(memStream);
+			byte[] bytestream = memStream.GetBuffer();
+			return bytestream;
+		}
+
+		public void DecodePhoto(byte[] value)
+		{
+			if (value == null) return;
+			byte[] byteme = value as byte[];
+			if (byteme == null) return;
+
+			try
+			{
+				MemoryStream strmImg = new MemoryStream(byteme);
+				BitmapImage myBitmapImage = new BitmapImage();
+				myBitmapImage.BeginInit();
+				myBitmapImage.StreamSource = strmImg;
+				myBitmapImage.DecodePixelWidth = 374;
+				myBitmapImage.DecodePixelHeight = 500;
+				myBitmapImage.EndInit();
+				//DebugImage.Source = myBitmapImage;
+			}
+			catch (Exception ex)
+			{
+
+			}
+
+		}
+
 	}
 }
