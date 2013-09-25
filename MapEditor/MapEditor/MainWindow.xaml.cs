@@ -68,6 +68,17 @@ namespace MapEditor
 			colorItem.Items.Add(greenItem);
 		}
 
+		private void AddToTree(Asset newAsset)
+		{
+			TreeViewItem newItem = new TreeViewItem();
+			newItem.Header = newAsset.Name;
+			//for (int i = 0; i < UPPER; i++)
+			{
+				//ComponentsTreeView. .Items.Add(greenItem);	
+			}
+			
+		}
+
 		private void AddToAssetDatabase(string name, string parent, string fileName)
 		{
 			LinqToAssetDataContext assetsDataContext = new LinqToAssetDataContext();
