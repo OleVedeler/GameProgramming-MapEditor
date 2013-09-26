@@ -35,9 +35,9 @@ namespace MapEditor
 		{
 			InitializeComponent();
 			EditorGrid.Background = Brushes.Black;
-			for (int coloum = 0; coloum < 17; coloum++)
+            for (int coloum = 0; coloum < EditorGrid.Width / pixelWidth; coloum++)
 			{
-				for (int row = 0; row < 22; row++)
+                for (int row = 0; row < EditorGrid.Height / pixelHeight; row++)
 				{
 					Grid temp = new Grid();
 					temp.Height = pixelHeight;
@@ -128,12 +128,14 @@ namespace MapEditor
 
 			if (e.LeftButton == MouseButtonState.Pressed)
 			{
+                /*
 				if (((TreeViewItem) ComponentsTreeView.SelectedItem).Header == "Red")
 					temp.Background = Brushes.Red;
 				else if (((TreeViewItem) ComponentsTreeView.SelectedItem).Header == "Blue")
 					temp.Background = Brushes.Blue;
 				else if (((TreeViewItem) ComponentsTreeView.SelectedItem).Header == "Green")
 					temp.Background = Brushes.Green;
+                */
 			}
 		}
 
@@ -173,30 +175,61 @@ namespace MapEditor
 
         private void MenuItem_new(object sender, RoutedEventArgs e)
         {
-            var url = "{\"tiles\": [{\"id\":1, \"isObstacle\":true}]}";
+            LinqToAssetDataContext assetsDataContext = new LinqToAssetDataContext();
+
+            // Query the database for the rows to be deleted.
+            var allAssets =
+                from asset in assetsDataContext.Assets
+                select asset;
+
+            foreach (var a in allAssets)
+            {
+                assetsDataContext.Assets.DeleteOnSubmit(a);
+            }
+
+            assetsDataContext.SubmitChanges();
+
+            UpdateTreeView();
         }
         private void MenuItem_save(object sender, RoutedEventArgs e)
         {
             int size = (int)((EditorGrid.Height / pixelHeight) * (EditorGrid.Width / pixelWidth));
 
-            JSON jsonFile = new JSON(size);
+            JSON jsonFile = new JSON();
 
             for (int i = 0; i < size; i++)
             {
-                jsonFile.tiles[i].id = i;
-                jsonFile.tiles[i].isObstacle = (0 == i % 2) ? true : false;
+                Tile tiile = new Tile();
+                tiile.id = i;
+                tiile.isObstacle = (i % 2);
+
+                jsonFile.tiles.Add(tiile);
         }
 
             Console.WriteLine(toJSON(jsonFile));
         }
         private void MenuItem_load(object sender, RoutedEventArgs e)
         {
+            String jsonStr = "{\"tiles\": [{\"id\":0,\"isObstacle\":0},{\"id\":1,\"isObstacle\":1},{\"id\":2,\"isObstacle\":0},{\"id\":3,\"isObstacle\":1},{\"id\":4,\"isObstacle\":0},{\"id\":5,\"isObstacle\":1},{\"id\":6,\"isObstacle\":0},{\"id\":7,\"isObstacle\":1},{\"id\":8,\"isObstacle\":0},{\"id\":9,\"isObstacle\":1},{\"id\":10,\"isObstacle\":0},{\"id\":11,\"isObstacle\":1},{\"id\":12,\"isObstacle\":0},{\"id\":13,\"isObstacle\":1},{\"id\":14,\"isObstacle\":0},{\"id\":15,\"isObstacle\":1},{\"id\":16,\"isObstacle\":0},{\"id\":17,\"isObstacle\":1},{\"id\":18,\"isObstacle\":0},{\"id\":19,\"isObstacle\":1},{\"id\":20,\"isObstacle\":0}]}";
 
+
+            JSON DeserializedJson = JsonConvert.DeserializeObject<JSON>(jsonStr);
+
+            String test = "";
+            foreach(Tile t in DeserializedJson.tiles) {
+                test += "id: " + t.id + " | isOb: " + t.isObstacle + "\n";
+            }
+
+            Console.WriteLine(test);
+
+            /*
+            JsonSerializer serializer = JsonSerializer.Create();
+            serializer.*/
         }
         private void MenuItem_import(object sender, RoutedEventArgs e)
         {
 
-			AddToAssetDatabase("lett vann", "Vann", "C:\\ToolsProgrammering\\MapEditor\\MapEditor\\grassTile.jpg");
+			AddToAssetDatabase("lett vann", "Vann", "C:\\ToolsProgramming\\MapEditor\\MapEditor\\grassTile.jpg");
 			UpdateTreeView();
 
         }
@@ -236,15 +269,16 @@ namespace MapEditor
                 return !string.IsNullOrEmpty(json_data) ? JsonConvert.DeserializeObject<T>(json_data) : new T();
             }
         }
-        */
 
         private String toJSON(JSON j)
         {
             String ret = "{\"tiles\": [";
 
-            for (int i = 0; i < j.tiles.Length; i++)
+            for (int i = 0; i < j.tiles.Count; i++)
             {
                 ret += "{\"id\":" + j.tiles[i].id + ",\"isObstacle\":" + j.tiles[i].isObstacle + "}";
+                if (i < j.tiles.Count - 1)
+                    ret += ",";
             }
 
             ret += "]}";

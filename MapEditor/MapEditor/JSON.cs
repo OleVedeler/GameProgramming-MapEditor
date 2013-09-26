@@ -10,21 +10,16 @@ namespace MapEditor
     public class Tile
     {
         public int id { get; set; }
-        public bool isObstacle { get; set; }
+        public int isObstacle { get; set; }
     }
 
-    class JSON
+    public class JSON
     {
-        public Tile[] tiles { get; set; }
+        public List<Tile> tiles { get; set; }
 
-        public JSON(int size)
+        public JSON()
         {
-            tiles = new Tile[size];
-
-            for (int i = 0; i < tiles.Length; i++)
-            {
-                tiles[i] = new Tile();
-            }
+            tiles = new List<Tile>();
         }
     }
 }
