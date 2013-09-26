@@ -32,9 +32,9 @@ namespace MapEditor
 		{
 			InitializeComponent();
 			EditorGrid.Background = Brushes.Black;
-			for (int coloum = 0; coloum < 50; coloum++)
+			for (int coloum = 0; coloum < 17; coloum++)
 			{
-				for (int row = 0; row < 50; row++)
+				for (int row = 0; row < 22; row++)
 				{
 					Grid temp = new Grid();
 					temp.Height = pixelHeight;
@@ -76,6 +76,10 @@ namespace MapEditor
 			TreeViewItem greenItem = new TreeViewItem();
 			greenItem.Header = "Green";
 			colorItem.Items.Add(greenItem);
+
+            TreeViewItem blackItem = new TreeViewItem();
+            greenItem.Header = "Black";
+            colorItem.Items.Add(blackItem);
 		}
 
 		private void AddToTree(Asset newAsset)
