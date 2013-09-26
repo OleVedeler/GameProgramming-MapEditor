@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -202,6 +203,21 @@ namespace MapEditor
         {
             Application.Current.Shutdown();
         }
+
+		private void UpdateTreeView()
+		{
+			
+			ComponentsTreeView.Items.Clear();
+			LinqToAssetDataContext assetsDataContext = new LinqToAssetDataContext();
+
+			var assetData = (
+				from asset in assetsDataContext.Assets
+				select asset);
+
+			using (var enumerator = assetData.GetEnumerator())
+				while (enumerator.MoveNext())
+					AddToTree(enumerator.Current);
+		}
 
         private static T _download_serialized_json_data<T>(string url) where T : new()
         {
