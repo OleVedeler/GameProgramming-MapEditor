@@ -17,7 +17,7 @@
         <Grid Name="EditorGrid" HorizontalAlignment="Left" Height="425" Margin="175,23,0,0" VerticalAlignment="Top" Width="550" Background="White"/>
         <TreeView Name="ComponentsTreeView" HorizontalAlignment="Left" Height="336" Margin="10,23,0,0" VerticalAlignment="Top" Width="147"/>
         <ListBox Margin="10,363,585,25">
-            <TextBox x:Name="DebugText" Height="23" TextWrapping="Wrap" Text="TextBox" Width="120"/>
+            <CheckBox x:Name="isObstacle" Content="Is Obstacle" Checked="CheckBox_Checked" Height="30" Width="138" FontSize="20" FlowDirection="RightToLeft" HorizontalContentAlignment="Right"/>
         </ListBox>
     </Grid>
 </Window>
