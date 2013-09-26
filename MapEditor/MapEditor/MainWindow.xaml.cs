@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Remoting.Messaging;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -53,7 +54,7 @@ namespace MapEditor
 					EditorGrid.Children.Add(temp);
 				}
 			}
-            
+
 			UpdateTreeView();
 		}
 
@@ -71,7 +72,7 @@ namespace MapEditor
 
 			TreeViewItem parentItem = new TreeViewItem();
 			parentItem.Header = newAsset.Parent;
-
+			
 			// For å kunne compare, Burde kunne gjøres bedre, men fant ingen enkel måte
 			List<TreeViewItem> Testing = new List<TreeViewItem>();
 
@@ -184,7 +185,7 @@ namespace MapEditor
             {
                 jsonFile.tiles[i].id = i;
                 jsonFile.tiles[i].isObstacle = (0 == i % 2) ? true : false;
-            }
+        }
 
             Console.WriteLine(toJSON(jsonFile));
         }
@@ -204,7 +205,22 @@ namespace MapEditor
             Application.Current.Shutdown();
 
         }
-        /*
+
+		private void UpdateTreeView()
+		{
+			
+			ComponentsTreeView.Items.Clear();
+			LinqToAssetDataContext assetsDataContext = new LinqToAssetDataContext();
+
+			var assetData = (
+				from asset in assetsDataContext.Assets
+				select asset);
+
+			using (var enumerator = assetData.GetEnumerator())
+				while (enumerator.MoveNext())
+					AddToTree(enumerator.Current);
+		}
+
         private static T _download_serialized_json_data<T>(string url) where T : new()
         {
             using (var w = new WebClient())
