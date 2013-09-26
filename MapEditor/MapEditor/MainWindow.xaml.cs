@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.Remoting.Messaging;
 using System.Net;
 using System.Text;
@@ -34,9 +35,9 @@ namespace MapEditor
 		{
 			InitializeComponent();
 			EditorGrid.Background = Brushes.Black;
-			for (int coloum = 0; coloum < 50; coloum++)
+			for (int coloum = 0; coloum < 17; coloum++)
 			{
-				for (int row = 0; row < 50; row++)
+				for (int row = 0; row < 22; row++)
 				{
 					Grid temp = new Grid();
 					temp.Height = pixelHeight;
@@ -202,6 +203,7 @@ namespace MapEditor
         private void MenuItem_exit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+
         }
 
 		private void UpdateTreeView()
@@ -234,6 +236,7 @@ namespace MapEditor
                 return !string.IsNullOrEmpty(json_data) ? JsonConvert.DeserializeObject<T>(json_data) : new T();
             }
         }
+        */
 
         private String toJSON(JSON j)
         {
