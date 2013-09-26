@@ -85,7 +85,7 @@ namespace MapEditor
 			for (int i = 0; i < ComponentsTreeView.Items.Count; i++)
 			{
 				Testing.Add((TreeViewItem)ComponentsTreeView.Items[i]);
-		}
+			}
 
 			bool parentExists = false;
 			// Tester om parenten finnes, hvis ikke setter vi et flag som sier fra at den ikke finnes
@@ -236,7 +236,6 @@ namespace MapEditor
                 return !string.IsNullOrEmpty(json_data) ? JsonConvert.DeserializeObject<T>(json_data) : new T();
             }
         }
-        */
 
         private String toJSON(JSON j)
         {
