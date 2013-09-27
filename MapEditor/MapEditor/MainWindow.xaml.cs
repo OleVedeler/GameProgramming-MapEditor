@@ -55,6 +55,19 @@ namespace MapEditor
 				}
 			}
 
+			/*LinqToAssetDataContext assetDataContext = new LinqToAssetDataContext();
+
+			var assetShitt = 
+				( 
+				from asset in assetDataContext.Assets
+				select asset
+				);
+
+			assetDataContext.Assets.DeleteAllOnSubmit(assetShitt);
+			assetDataContext.SubmitChanges();
+			*/
+
+
 			UpdateTreeView();
 		}
 
@@ -207,7 +220,7 @@ namespace MapEditor
         private void MenuItem_import(object sender, RoutedEventArgs e)
         {
 
-			AddToAssetDatabase("lett vann", "Vann", "C:\\ToolsProgrammering\\MapEditor\\MapEditor\\grassTile.jpg");
+			AddToAssetDatabase("Bush", "Landskap", "C:\\ToolsProgrammering\\MapEditor\\MapEditor\\Bush.jpg");
 			UpdateTreeView();
 
         }
