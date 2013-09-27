@@ -35,9 +35,9 @@ namespace MapEditor
 		{
 			InitializeComponent();
 			EditorGrid.Background = Brushes.Black;
-			for (int coloum = 0; coloum < 17; coloum++)
+			for (int coloum = 0; coloum < EditorGrid.Width / pixelWidth; coloum++)
 			{
-				for (int row = 0; row < 22; row++)
+				for (int row = 0; row < EditorGrid.Height / pixelHeight; row++)
 				{
 					Grid temp = new Grid();
 					temp.Height = pixelHeight;
@@ -48,8 +48,8 @@ namespace MapEditor
 					temp.Background = Brushes.Black;
 					temp.Margin = new Thickness(pixelHeight * coloum, pixelWidth * row, 0, 0);
 
-					temp.MouseEnter += new MouseEventHandler(ColourGrid);
-					temp.MouseLeftButtonDown += new MouseButtonEventHandler(ColourGrid);
+					temp.MouseEnter += new MouseEventHandler(DrawToGrid);
+					temp.MouseLeftButtonDown += new MouseButtonEventHandler(DrawToGrid);
 					
 					EditorGrid.Children.Add(temp);
 				}
@@ -57,6 +57,30 @@ namespace MapEditor
 
 			UpdateTreeView();
 		}
+
+
+		private void DrawToGrid(Object o, MouseEventArgs e)
+		{
+			//tester om noe har blitt valgt
+			if ((ComponentsTreeView.SelectedItem) == null) return;
+			string selectedName = ((TreeViewItem) ComponentsTreeView.SelectedItem).Header.ToString();
+			
+			//Finner Bilde som tilhører  navnet
+			LinqToAssetDataContext assetsDataContext = new LinqToAssetDataContext();
+			var assetData = (
+			from asset in assetsDataContext.Assets
+			where asset.Name == selectedName
+			select asset);
+			
+			// Tegner på sub griddene
+			Grid temp = (Grid) o;
+			if (e.LeftButton == MouseButtonState.Pressed)
+			{
+				temp.Background = new ImageBrush(DecodePhoto(assetData.First().Image.ToArray()));
+			}
+		}
+
+
 
 		/// <summary>
 		/// Legger DatabaseObjekter inn til TreeViewet. 
@@ -121,21 +145,6 @@ namespace MapEditor
 			assetsDataContext.SubmitChanges();
 		}
 
-		private void ColourGrid(Object o, MouseEventArgs e)
-		{
-			Grid temp = (Grid) o;
-
-
-			if (e.LeftButton == MouseButtonState.Pressed)
-			{
-				if (((TreeViewItem) ComponentsTreeView.SelectedItem).Header == "Red")
-					temp.Background = Brushes.Red;
-				else if (((TreeViewItem) ComponentsTreeView.SelectedItem).Header == "Blue")
-					temp.Background = Brushes.Blue;
-				else if (((TreeViewItem) ComponentsTreeView.SelectedItem).Header == "Green")
-					temp.Background = Brushes.Green;
-			}
-		}
 
 		public static Byte[] convertBitmapImageToBytestream(BitmapImage bi)
 		{
@@ -147,11 +156,13 @@ namespace MapEditor
 			return bytestream;
 		}
 
-		public void DecodePhoto(byte[] value)
+		public BitmapImage DecodePhoto(byte[] value)
 		{
-			if (value == null) return;
+			//Må fikses for exceptions
+			if (value == null) return new BitmapImage();
+
 			byte[] byteme = value as byte[];
-			if (byteme == null) return;
+			if (byteme == null) return new BitmapImage();
 
 			try
 			{
@@ -162,13 +173,13 @@ namespace MapEditor
 				myBitmapImage.DecodePixelWidth = 374;
 				myBitmapImage.DecodePixelHeight = 500;
 				myBitmapImage.EndInit();
-				//DebugImage.Source = myBitmapImage;
+				return myBitmapImage;
 			}
 			catch (Exception ex)
 			{
 
 			}
-
+			return new BitmapImage();
 		}
 
         private void MenuItem_new(object sender, RoutedEventArgs e)
