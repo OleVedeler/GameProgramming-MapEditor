@@ -27,14 +27,24 @@ namespace MapEditor.Handlers
 			return assets;
 		}
 
-		public IQueryable<Asset> GetRowsBy(String name)
+		public Asset GetRowBy(String name)
 		{
 			var assetData = (
 			from asset in _dataContext.Assets
 			where asset.Name == name
 			select asset);
 
-			return assetData;
+			return assetData.First();
+		}
+
+		public Asset GetRowBy(int id)
+		{
+			var assetData = (
+			from asset in _dataContext.Assets
+			where asset.Id == id
+			select asset);
+
+			return assetData.First();
 		} 
 
 		public void DeleteAll()
@@ -57,7 +67,7 @@ namespace MapEditor.Handlers
 			_dataContext.SubmitChanges();
 		}
 
-		private Byte[] EncodeImage(BitmapImage bi)
+		public Byte[] EncodeImage(BitmapImage bi)
 		{
 			MemoryStream memStream = new MemoryStream();
 			JpegBitmapEncoder encoder = new JpegBitmapEncoder();

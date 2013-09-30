@@ -49,10 +49,8 @@ namespace MapEditor
         }
         private void MenuItem_import(object sender, RoutedEventArgs e)
         {
-
-
-			_assetDatabaseHandler.Add("Gress", "Landskap", @"C:\ToolsProgrammering\MapEditor\MapEditor\grassTile.jpg");
-			_treeViewHandler.UpdateTreeView();
+			//_assetDatabaseHandler.Add("Busk", "Landskap", @"C:\ToolsProgrammering\MapEditor\MapEditor\Images\Bush.jpg");
+			//_treeViewHandler.Update();
 
         }
         private void MenuItem_exit(object sender, RoutedEventArgs e)

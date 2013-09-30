@@ -19,7 +19,10 @@ namespace MapEditor.Handlers
 		private readonly AssetDatabaseHandler _assetDatabaseHandler;
 		private readonly TreeViewHandler _treeViewHandler;
 
-		public GameGridHandler(Grid editorGrid, AssetDatabaseHandler assetDatabaseHandler, TreeViewHandler treeViewHandler)
+		public GameGridHandler(
+							Grid editorGrid, 
+							AssetDatabaseHandler assetDatabaseHandler, 
+							TreeViewHandler treeViewHandler)
 		{
 			_editorGrid = editorGrid;
 			_assetDatabaseHandler = assetDatabaseHandler;
@@ -60,17 +63,17 @@ namespace MapEditor.Handlers
 		private void DrawToGridEvent(Object o, MouseEventArgs e)
 		{
 			//tester om noe har blitt valgt
-			if ((_treeViewHandler.TreeView.SelectedItem) == null) return;
-			string selectedName = ((TreeViewItem)_treeViewHandler.TreeView.SelectedItem).Header.ToString();
+			if ((_treeViewHandler.SelectedItem()) == null) return;
+			string selectedName = ((TreeViewItem)_treeViewHandler.SelectedItem()).Header.ToString();
 
 			//Finner Bilde som tilhører  navnet
-			var assetData = _assetDatabaseHandler.GetRowsBy(selectedName);
+			var assetData = _assetDatabaseHandler.GetRowBy(selectedName);
 
 			// Tegner på sub griddene
 			Grid currentGrid = (Grid)o;
 			if (e.LeftButton == MouseButtonState.Pressed)
 			{
-				currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(assetData.First().Image.ToArray()));
+				currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(assetData.Image.ToArray()));
 			}
 		}
 	}
