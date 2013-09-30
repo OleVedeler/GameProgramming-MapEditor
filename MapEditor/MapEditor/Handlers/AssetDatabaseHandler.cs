@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace MapEditor
+namespace MapEditor.Handlers
 {
-	class AssetDatabase
+	class AssetDatabaseHandler
 	{
 		private readonly LinqToAssetDataContext _dataContext;
 
-		public AssetDatabase()
+		public AssetDatabaseHandler()
 		{
 			_dataContext = new LinqToAssetDataContext();
 		}
@@ -69,10 +69,9 @@ namespace MapEditor
 
 		public BitmapImage DecodeImage(byte[] value)
 		{
-			//Må fikses for exceptions
+			//TODO: Må fikses med exceptions
 			if (value == null) return new BitmapImage();
-			byte[] byteme = value as byte[];
-			if (byteme == null) return new BitmapImage();
+			byte[] byteme = value;
 
 			try
 			{
@@ -85,7 +84,11 @@ namespace MapEditor
 				myBitmapImage.EndInit();
 				return myBitmapImage;
 			}
-			catch (Exception ex) { }
+			catch (Exception e)
+			{
+				// TODO: Skriv errormelding til egen fil, slik at det kan evalueres!
+				Console.WriteLine(e.ToString());
+			}
 			
 			return new BitmapImage();
 		}

@@ -58,8 +58,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="GameGridHandler.cs" />
-    <Compile Include="TreeViewHandler.cs" />
+    <Compile Include="Handlers\GameGridHandler.cs" />
+    <Compile Include="Handlers\TreeViewHandler.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -68,7 +68,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssetDatabase.cs" />
+    <Compile Include="Handlers\AssetDatabaseHandler.cs" />
     <Compile Include="JSON.cs" />
     <Compile Include="LinqToAsset.designer.cs">
       <AutoGen>True</AutoGen>
@@ -121,13 +121,11 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="grassTile.jpg" />
+    <Resource Include="Images\grassTile.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Images\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Bush.jpg" />
+    <Resource Include="Images\Bush.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

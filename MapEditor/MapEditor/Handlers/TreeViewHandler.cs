@@ -5,17 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace MapEditor
+namespace MapEditor.Handlers
 {
 	class TreeViewHandler
 	{
 		public TreeView TreeView { get; private set;}
-		private readonly AssetDatabase _assetDatabase;
+		private readonly AssetDatabaseHandler _assetDatabaseHandler;
 
-		public TreeViewHandler(TreeView treeView, AssetDatabase assetDatabase)
+		public TreeViewHandler(TreeView treeView, AssetDatabaseHandler assetDatabaseHandler)
 		{
 			TreeView = treeView;
-			_assetDatabase = assetDatabase;
+			_assetDatabaseHandler = assetDatabaseHandler;
 			InitTreeView();
 		}
 
@@ -56,7 +56,7 @@ namespace MapEditor
 			parentItem.Items.Add(newItem);
 		}
 
-		public void InitTreeView()
+		private void InitTreeView()
 		{
 			UpdateTreeView();
 		}
@@ -64,7 +64,7 @@ namespace MapEditor
 		public void UpdateTreeView()
 		{
 			TreeView.Items.Clear();
-			var assetData = _assetDatabase.GetAllRows();
+			var assetData = _assetDatabaseHandler.GetAllRows();
 
 			using (var enumerator = assetData.GetEnumerator())
 				while (enumerator.MoveNext())

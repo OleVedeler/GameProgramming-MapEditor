@@ -1,25 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using MapEditor.Handlers;
+using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Runtime.Remoting.Messaging;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace MapEditor
 {
@@ -28,7 +12,7 @@ namespace MapEditor
 	/// </summary>
 	public partial class MainWindow
 	{
-		private readonly AssetDatabase _assetDatabase;
+		private readonly AssetDatabaseHandler _assetDatabaseHandler;
 		private readonly TreeViewHandler _treeViewHandler;
 		private readonly GameGridHandler _gameGridHandler;
 		
@@ -36,9 +20,9 @@ namespace MapEditor
 		{
 			InitializeComponent();
 
-			_assetDatabase = new AssetDatabase();
-			_treeViewHandler = new TreeViewHandler(ComponentsTreeView, _assetDatabase);
-			_gameGridHandler = new GameGridHandler(EditorGrid, _assetDatabase,_treeViewHandler);
+			_assetDatabaseHandler = new AssetDatabaseHandler();
+			_treeViewHandler = new TreeViewHandler(ComponentsTreeView, _assetDatabaseHandler);
+			_gameGridHandler = new GameGridHandler(EditorGrid, _assetDatabaseHandler, _treeViewHandler);
 		}
 
         private void MenuItem_new(object sender, RoutedEventArgs e)
@@ -66,7 +50,8 @@ namespace MapEditor
         private void MenuItem_import(object sender, RoutedEventArgs e)
         {
 
-			_assetDatabase.Add("Bush", "Landskap", "C:\\ToolsProgrammering\\MapEditor\\MapEditor\\Bush.jpg");
+
+			_assetDatabaseHandler.Add("Gress", "Landskap", @"C:\ToolsProgrammering\MapEditor\MapEditor\grassTile.jpg");
 			_treeViewHandler.UpdateTreeView();
 
         }

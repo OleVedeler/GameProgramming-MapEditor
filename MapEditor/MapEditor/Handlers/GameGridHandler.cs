@@ -8,20 +8,21 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace MapEditor
+namespace MapEditor.Handlers
 {
 	class GameGridHandler
 	{
-		private readonly Grid _editorGrid;
+
 		private const int PixelWidth = 25;
 		private const int PixelHeight = 25;
-		private readonly AssetDatabase _assetDatabase;
+		private readonly Grid _editorGrid;
+		private readonly AssetDatabaseHandler _assetDatabaseHandler;
 		private readonly TreeViewHandler _treeViewHandler;
 
-		public GameGridHandler(Grid editorGrid, AssetDatabase assetDatabase, TreeViewHandler treeViewHandler)
+		public GameGridHandler(Grid editorGrid, AssetDatabaseHandler assetDatabaseHandler, TreeViewHandler treeViewHandler)
 		{
 			_editorGrid = editorGrid;
-			_assetDatabase = assetDatabase;
+			_assetDatabaseHandler = assetDatabaseHandler;
 			_treeViewHandler = treeViewHandler;
 			InitGameGrid();
 		}
@@ -38,19 +39,20 @@ namespace MapEditor
 			{
 				for (int row = 0; row < _editorGrid.Height / PixelHeight; row++)
 				{
-					Grid temp = new Grid();
-					temp.Height = PixelHeight;
-					temp.Width = PixelWidth;
-					temp.HorizontalAlignment = HorizontalAlignment.Left;
-					temp.VerticalAlignment = VerticalAlignment.Top;
+					Grid childGrid = new Grid
+					{
+						Height = PixelHeight,
+						Width = PixelWidth,
+						HorizontalAlignment = HorizontalAlignment.Left,
+						VerticalAlignment = VerticalAlignment.Top,
+						Background = Brushes.Black,
+						Margin = new Thickness(PixelHeight*coloum, PixelWidth*row, 0, 0)
+					};
 
-					temp.Background = Brushes.Black;
-					temp.Margin = new Thickness(PixelHeight * coloum, PixelWidth * row, 0, 0);
+					childGrid.MouseEnter += DrawToGridEvent;
+					childGrid.MouseLeftButtonDown += DrawToGridEvent;
 
-					temp.MouseEnter += new MouseEventHandler(DrawToGridEvent);
-					temp.MouseLeftButtonDown += new MouseButtonEventHandler(DrawToGridEvent);
-
-					_editorGrid.Children.Add(temp);
+					_editorGrid.Children.Add(childGrid);
 				}
 			}
 		}
@@ -62,13 +64,13 @@ namespace MapEditor
 			string selectedName = ((TreeViewItem)_treeViewHandler.TreeView.SelectedItem).Header.ToString();
 
 			//Finner Bilde som tilhører  navnet
-			var assetData = _assetDatabase.GetRowsBy(selectedName);
+			var assetData = _assetDatabaseHandler.GetRowsBy(selectedName);
 
 			// Tegner på sub griddene
 			Grid currentGrid = (Grid)o;
 			if (e.LeftButton == MouseButtonState.Pressed)
 			{
-				currentGrid.Background = new ImageBrush(_assetDatabase.DecodeImage(assetData.First().Image.ToArray()));
+				currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(assetData.First().Image.ToArray()));
 			}
 		}
 	}
