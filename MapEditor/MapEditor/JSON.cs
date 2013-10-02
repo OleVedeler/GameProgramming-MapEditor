@@ -9,21 +9,21 @@ namespace MapEditor
 {
     public class Tile
     {
-        public int id { get; set; }
-        public bool isObstacle { get; set; }
+        public int Id { get; set; }
+        public bool IsObstacle { get; set; }
     }
 
     class JSON
     {
-        public Tile[] tiles { get; set; }
+        public Tile[] Tiles { get; set; }
 
         public JSON(int size)
         {
-            tiles = new Tile[size];
+            Tiles = new Tile[size];
 
-            for (int i = 0; i < tiles.Length; i++)
+            for (int i = 0; i < Tiles.Length; i++)
             {
-                tiles[i] = new Tile();
+                Tiles[i] = new Tile();
             }
         }
     }
