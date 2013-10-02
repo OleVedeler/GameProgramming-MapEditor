@@ -32,15 +32,24 @@ namespace MapEditor.Handlers
 
 		public int Size()
 		{
-			return (int)((_editorGrid.Height / PixelHeight) * (_editorGrid.Width / PixelWidth));
+			return Width() * Height();
+		}
+
+		public int Width()
+		{
+			return (int)(_editorGrid.Width/PixelWidth);
+		}
+
+		public int Height()
+		{
+			return (int) (_editorGrid.Height/PixelHeight);
 		}
 
 		private void InitGameGrid()
 		{
-			_editorGrid.Background = Brushes.Black;
-			for (int coloum = 0; coloum < _editorGrid.Width / PixelWidth; coloum++)
+			for (int coloum = 0; coloum < Width(); coloum++)
 			{
-				for (int row = 0; row < _editorGrid.Height / PixelHeight; row++)
+				for (int row = 0; row < Height(); row++)
 				{
 					Grid childGrid = new Grid
 					{
@@ -68,6 +77,9 @@ namespace MapEditor.Handlers
 
 			//Finner Bilde som tilhører  navnet
 			var assetData = _assetDatabaseHandler.GetRowBy(selectedName);
+
+			// Tester om valgt element finnes i databasen
+			if(assetData == null) return;
 
 			// Tegner på sub griddene
 			Grid currentGrid = (Grid)o;

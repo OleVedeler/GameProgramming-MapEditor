@@ -36,28 +36,26 @@ namespace MapEditor.Handlers
 		/// <param name="newAsset">Er en database rad</param>
 		public void Add(Asset newAsset)
 		{
-			TreeViewItem newItem = new TreeViewItem { Header = newAsset.Name };
-			TreeViewItem parentItem = new TreeViewItem { Header = newAsset.Parent };
+			TreeViewItem newItem = new TreeViewItem {Header = newAsset.Name};
+			TreeViewItem parentItem = new TreeViewItem {Header = newAsset.Parent};
 
-			// For å kunne compare, Burde kunne gjøres bedre, men fant ingen enkel måte
-
-			// Leger inn det første elementet hvis, den er tom. Burde kunne implementeres inni loopen
-			if (_treeView.Items.Count == 0)
+			if (_treeView.Items.Count != 0)
 			{
-				_treeView.Items.Add(parentItem);
-			}
-			// Legger treet inn i listen
-			List<TreeViewItem> treeViewList = _treeView.Items.Cast<TreeViewItem>().ToList();
+				//_treeView.Items.Add(parentItem);
+				// Legger treet inn i listen
+				List<TreeViewItem> treeViewList = _treeView.Items.Cast<TreeViewItem>().ToList();
 
-			// returnerer hvis den har lagt til elementet
-			for (int i = 0; i < _treeView.Items.Count; i++)
-			{
-				// Todo: Fix Feil me spaceing. 
-				// eks. Landskap og Landskap2 vil bli det samme grunnet Contains
-				if ((!((string)treeViewList[i].Header).Contains(parentItem.Header.ToString()))) continue;
-				
-				((TreeViewItem)_treeView.Items[i]).Items.Add(newItem);
-				return;
+				// returnerer hvis den har lagt til elementet
+				for (int i = 0; i < _treeView.Items.Count; i++)
+				{
+					// Todo: Fix Feil med spaceing. 
+					// eks. Landskap og Landskap2 vil bli det samme grunnet Contains
+					if ((!((string) treeViewList[i].Header).Contains(parentItem.Header.ToString())))
+						continue;
+
+					((TreeViewItem) _treeView.Items[i]).Items.Add(newItem);
+					return;
+				}
 			}
 
 			_treeView.Items.Add(parentItem);

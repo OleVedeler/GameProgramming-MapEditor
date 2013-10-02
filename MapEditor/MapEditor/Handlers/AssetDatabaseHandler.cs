@@ -34,7 +34,7 @@ namespace MapEditor.Handlers
 			where asset.Name == name
 			select asset);
 
-			return assetData.First();
+			return assetData.AsEnumerable().Any() ? assetData.First() : null;
 		}
 
 		public Asset GetRowBy(int id)
@@ -44,7 +44,7 @@ namespace MapEditor.Handlers
 			where asset.Id == id
 			select asset);
 
-			return assetData.First();
+			return assetData.AsEnumerable().Any() ? assetData.First() : null;
 		} 
 
 		public void DeleteAll()
@@ -60,18 +60,17 @@ namespace MapEditor.Handlers
 
 			newAsset.Name = name;
 			newAsset.Parent = parent;
-
 			newAsset.Image = EncodeImage(bitmapImage);
 
 			_dataContext.Assets.InsertOnSubmit(newAsset);
 			_dataContext.SubmitChanges();
 		}
 
-		public Byte[] EncodeImage(BitmapImage bi)
+		public Byte[] EncodeImage(BitmapImage image)
 		{
 			MemoryStream memStream = new MemoryStream();
 			JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-			encoder.Frames.Add(BitmapFrame.Create(bi));
+			encoder.Frames.Add(BitmapFrame.Create(image));
 			encoder.Save(memStream);
 			byte[] bytestream = memStream.GetBuffer();
 			return bytestream;
@@ -85,10 +84,10 @@ namespace MapEditor.Handlers
 
 			try
 			{
-				MemoryStream strmImg = new MemoryStream(byteme);
+				MemoryStream memStream = new MemoryStream(byteme);
 				BitmapImage myBitmapImage = new BitmapImage();
 				myBitmapImage.BeginInit();
-				myBitmapImage.StreamSource = strmImg;
+				myBitmapImage.StreamSource = memStream;
 				myBitmapImage.DecodePixelWidth = 374;
 				myBitmapImage.DecodePixelHeight = 500;
 				myBitmapImage.EndInit();
