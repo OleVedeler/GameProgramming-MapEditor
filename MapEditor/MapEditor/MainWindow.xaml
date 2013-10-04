@@ -9,5 +9,27 @@
         <ListBox Margin="10,363,585,25">
             <CheckBox x:Name="isObstacle" Content="Is Obstacle" Height="30" Width="138" FontSize="20" FlowDirection="RightToLeft" HorizontalContentAlignment="Right"/>
         </ListBox>
+        <Grid x:Name="inputBox" Visibility="Collapsed">
+            <Grid Background="LightGray" Opacity="0.5"/>
+            <Border
+            MinWidth="250"
+            Background="Gray" 
+            BorderBrush="Black" 
+            BorderThickness="2" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Margin="5" Text="Parent:" />
+                    <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="InputParent"/>
+                    <TextBlock Margin="5" Text="Name:" />
+                    <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="InputName"/>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="YesButton" Margin="5" Content="Ok" Background="Gray" />
+                        <Button x:Name="NoButton" Margin="5" Content="Cancel" Background="Gray" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

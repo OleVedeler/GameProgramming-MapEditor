@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using MapEditor.Classes;
 
 namespace MapEditor.Handlers
 {
@@ -53,13 +54,13 @@ namespace MapEditor.Handlers
 			_dataContext.SubmitChanges();
 		}
 
-		public void Add(string name, string parent, string fileName)
+		public void Add(ImportObject i)
 		{
 			Asset newAsset = new Asset();
-			BitmapImage bitmapImage = new BitmapImage(new Uri(fileName));
+			BitmapImage bitmapImage = new BitmapImage(new Uri(i.filename));
 
-			newAsset.Name = name;
-			newAsset.Parent = parent;
+			newAsset.Name = i.name;
+			newAsset.Parent = i.parent;
 			newAsset.Image = EncodeImage(bitmapImage);
 
 			_dataContext.Assets.InsertOnSubmit(newAsset);

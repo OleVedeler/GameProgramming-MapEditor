@@ -7,17 +7,19 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using MapEditor.Classes;
 
 namespace MapEditor.Handlers
 {
 	class GameGridHandler
 	{
-
 		private const int PixelWidth = 25;
 		private const int PixelHeight = 25;
-		private readonly Grid _editorGrid;
+        private JSON jsonFile;
+        private readonly Grid _editorGrid;
 		private readonly AssetDatabaseHandler _assetDatabaseHandler;
 		private readonly TreeViewHandler _treeViewHandler;
+        private readonly JsonHandler _jsonHandler;
 
 		public GameGridHandler(
 							Grid editorGrid, 
@@ -27,6 +29,8 @@ namespace MapEditor.Handlers
 			_editorGrid = editorGrid;
 			_assetDatabaseHandler = assetDatabaseHandler;
 			_treeViewHandler = treeViewHandler;
+            _jsonHandler = new JsonHandler();
+            jsonFile = new JSON();
 			InitGameGrid();
 		}
 
@@ -44,6 +48,12 @@ namespace MapEditor.Handlers
 		{
 			return (int) (_editorGrid.Height/PixelHeight);
 		}
+
+        public void import(ImportObject imp)
+        {
+            _assetDatabaseHandler.Add(imp);
+            _treeViewHandler.Update();
+        }
 
 		private void InitGameGrid()
 		{
@@ -88,5 +98,14 @@ namespace MapEditor.Handlers
 				currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(assetData.Image.ToArray()));
 			}
 		}
+
+        private void addToJsonList(Grid g, Asset assetData)
+        {
+            //id
+            jsonFile.tiles.ElementAt(_editorGrid.Children.IndexOf(g)).id = assetData.Id;
+
+            //isObstacle
+            //Check if chekcbox is checked
+        }
 	}
 }

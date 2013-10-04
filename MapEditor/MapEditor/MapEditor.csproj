@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\ImportObject.cs" />
     <Compile Include="Handlers\GameGridHandler.cs" />
     <Compile Include="Handlers\JsonHandler.cs" />
     <Compile Include="Handlers\MenuHandler.cs" />
@@ -71,7 +72,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Handlers\AssetDatabaseHandler.cs" />
-    <Compile Include="JSON.cs" />
+    <Compile Include="Classes\JSON.cs" />
     <Compile Include="LinqToAsset.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
