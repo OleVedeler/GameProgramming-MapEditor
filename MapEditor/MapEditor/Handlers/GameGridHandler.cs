@@ -96,6 +96,7 @@ namespace MapEditor.Handlers
 			if (e.LeftButton == MouseButtonState.Pressed)
 			{
 				currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(assetData.Image.ToArray()));
+                addToJsonList(currentGrid, assetData);
 			}
 		}
 
