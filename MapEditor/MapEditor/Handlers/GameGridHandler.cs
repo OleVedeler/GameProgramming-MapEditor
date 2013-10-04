@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using MapEditor.Classes;
+using Microsoft.Win32;
 
 namespace MapEditor.Handlers
 {
@@ -55,6 +56,27 @@ namespace MapEditor.Handlers
             _treeViewHandler.Update();
         }
 
+        public void save() 
+        {
+            string json = _jsonHandler.ToJSON(jsonFile);
+
+            SaveFileDialog save = new SaveFileDialog();
+
+            save.FileName = "Map"; // Default file name
+            save.DefaultExt = ".json"; // Default file extension
+            save.Filter = "JSON files (.json)|*.json"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = save.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = save.FileName;
+            }
+        }
+
 		private void InitGameGrid()
 		{
 			for (int coloum = 0; coloum < Width(); coloum++)
@@ -75,6 +97,7 @@ namespace MapEditor.Handlers
 					childGrid.MouseLeftButtonDown += DrawToGridEvent;
 
 					_editorGrid.Children.Add(childGrid);
+                    jsonFile.tiles.Add(new Tile());
 				}
 			}
 		}

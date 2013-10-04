@@ -60,22 +60,7 @@ namespace MapEditor.Handlers
         }
         private void MenuItem_save(object sender, RoutedEventArgs e)
         {
-            /*
-			int size = _gameGridHandler.Size();
-
-			JSON jsonFile = new JSON();
-
-			for (int i = 0; i < size; i++)
-			{
-                Tile t = new Tile();
-                t.id = i;
-                t.isObstacle = (i % 2);
-
-                jsonFile.tiles.Add(t);
-			}
-
-			Console.WriteLine(_jsonHandler.ToJSON(jsonFile));
-             */
+            _gameGridHandler.save();
         }
         private void MenuItem_load(object sender, RoutedEventArgs e)
         {
