@@ -4,8 +4,8 @@
     <Type Name="Asset">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Image" Type="System.Data.Linq.Binary" DbType="Image NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="Name" Type="System.String" DbType="NChar(255) NOT NULL" CanBeNull="false" />
-      <Column Name="Parent" Type="System.String" DbType="NChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NChar(25) NOT NULL" CanBeNull="false" />
+      <Column Name="Parent" Type="System.String" DbType="NChar(25) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>
