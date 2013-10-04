@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using MapEditor.Classes;
 using Microsoft.Win32;
+using System.IO;
 
 namespace MapEditor.Handlers
 {
@@ -74,6 +75,7 @@ namespace MapEditor.Handlers
             {
                 // Save document
                 string filename = save.FileName;
+                File.WriteAllText(filename, json);
             }
         }
 
