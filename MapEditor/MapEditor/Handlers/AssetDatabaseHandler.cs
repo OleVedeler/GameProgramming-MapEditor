@@ -64,6 +64,10 @@ namespace MapEditor.Handlers
 			newAsset.Image = EncodeImage(bitmapImage);
 
 			_dataContext.Assets.InsertOnSubmit(newAsset);
+
+			//todo: håndtere navn duplikater
+			// legger inn 2 assets i databasen for en 
+			// eller annen grunn når du importer mer en en hver gang
 			_dataContext.SubmitChanges();
 		}
 
