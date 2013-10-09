@@ -10,28 +10,16 @@ namespace MapEditor.Handlers
 {
 	class JsonHandler
 	{
-		public JsonHandler()
-		{
-			
-		}
+		public JsonHandler(){}
 
-        public void loadFromJson()
+        public JSON Deserialize(String json)
         {
-
+            return JsonConvert.DeserializeObject<JSON>(json);
         }
 
-		public String ToJSON(JSON json)
+		public String Serialize(JSON json)
 		{
-			// gjør det samme som for loopen som var her før.
-			String ret = json.tiles.Aggregate(
-										"{\"tiles\": [", (current, t) 
-										=> current 
-										+ ("{\"id\":" + t.id + ",\"isObstacle\":" 
-										+ t.isObstacle + "}"));
-			ret += "]}";
-
-			return ret;
+            return JsonConvert.SerializeObject(json);
 		}
-
 	}
 }

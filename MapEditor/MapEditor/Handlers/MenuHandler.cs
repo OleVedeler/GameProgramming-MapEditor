@@ -64,7 +64,7 @@ namespace MapEditor.Handlers
         }
         private void MenuItem_load(object sender, RoutedEventArgs e)
         {
-
+            _gameGridHandler.load();
         }
         private void MenuItem_import(object sender, RoutedEventArgs e)
 		{

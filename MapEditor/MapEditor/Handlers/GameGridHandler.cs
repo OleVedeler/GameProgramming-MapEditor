@@ -59,7 +59,7 @@ namespace MapEditor.Handlers
 
         public void save() 
         {
-            string json = _jsonHandler.ToJSON(jsonFile);
+            string json = _jsonHandler.Serialize(jsonFile);
 
             SaveFileDialog save = new SaveFileDialog();
 
@@ -76,12 +76,51 @@ namespace MapEditor.Handlers
                 // Save document
                 string filename = save.FileName;
                 File.WriteAllText(filename, json);
+                Console.WriteLine(json);
+            }
+        }
+
+        public void load()
+        {
+            Stream stream = null;
+            OpenFileDialog open = new OpenFileDialog();
+            string jsonStr = "";
+
+            open.InitialDirectory = "c:\\";
+            open.Filter = "JSON files (.json)|*.json";
+            open.FilterIndex = 2;
+            open.RestoreDirectory = true;
+
+            Nullable<bool> result = open.ShowDialog();
+
+            if (result == true)
+            {
+                try
+                {
+                    if ((stream = open.OpenFile()) != null)
+                    {
+                        using (stream)
+                        {
+                            StreamReader reader = new StreamReader(stream);
+                            jsonStr = reader.ReadToEnd();
+                            reader.Close();
+                        }
+                    }
+
+                    jsonFile = _jsonHandler.Deserialize(jsonStr);
+
+                    //load and draw from JSON object();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: Could not read file from disk. Original error: " + ex.Message);
+                }
             }
         }
 
 		private void InitGameGrid()
 		{
-			for (int coloum = 0; coloum < Width(); coloum++)
+			for (int column = 0; column < Width(); column++)
 			{
 				for (int row = 0; row < Height(); row++)
 				{
@@ -92,7 +131,7 @@ namespace MapEditor.Handlers
 						HorizontalAlignment = HorizontalAlignment.Left,
 						VerticalAlignment = VerticalAlignment.Top,
 						Background = Brushes.Black,
-						Margin = new Thickness(PixelHeight*coloum, PixelWidth*row, 0, 0)
+						Margin = new Thickness(PixelHeight*row, PixelWidth*column, 0, 0)
 					};
 
 					childGrid.MouseEnter += DrawToGridEvent;
@@ -133,5 +172,6 @@ namespace MapEditor.Handlers
             //isObstacle
             //Check if chekcbox is checked
         }
-	}
+
+    }
 }
