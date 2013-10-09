@@ -53,6 +53,15 @@ namespace MapEditor.Handlers
 			_dataContext.Assets.DeleteAllOnSubmit(GetAllRows());
 			_dataContext.SubmitChanges();
 		}
+		
+		public void Delete(string name)
+		{
+			Asset row = GetRowBy(name);
+			if(row == null) return;
+
+			_dataContext.Assets.DeleteOnSubmit(row);
+			_dataContext.SubmitChanges();
+		}
 
 		public void Add(ImportObject i)
 		{

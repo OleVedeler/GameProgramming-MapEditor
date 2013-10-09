@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 
 namespace MapEditor.Handlers
 {
@@ -36,8 +39,10 @@ namespace MapEditor.Handlers
 		/// <param name="newAsset">Er en database rad</param>
 		public void Add(Asset newAsset)
 		{
-			TreeViewItem newItem = new TreeViewItem {Header = newAsset.Name};
-			TreeViewItem parentItem = new TreeViewItem {Header = newAsset.Parent};
+			TreeItem newItem = new TreeItem (newAsset.Name);
+			newItem.OnClickEvent += TreeItemOnClickEvent;
+			TreeItem parentItem = new TreeItem(newAsset.Parent);
+			parentItem.OnClickEvent += TreeItemOnClickEvent;
 
 			if (_treeView.Items.Count != 0)
 			{
@@ -45,6 +50,7 @@ namespace MapEditor.Handlers
 				// Legger treet inn i listen
 				List<TreeViewItem> treeViewList = _treeView.Items.Cast<TreeViewItem>().ToList();
 
+				//newItem.MouseRightButtonUp += RightButtonClick;
 				// returnerer hvis den har lagt til elementet
 				for (int i = 0; i < _treeView.Items.Count; i++)
 				{
@@ -60,6 +66,28 @@ namespace MapEditor.Handlers
 
 			_treeView.Items.Add(parentItem);
 			parentItem.Items.Add(newItem);
+		}
+
+		private void TreeItemOnClickEvent(object sender, RoutedEventArgs routedEventArgs)
+		{
+			
+
+			_treeView.Items.Remove(sender);
+
+			foreach (TreeViewItem treeView in _treeView.Items)
+			{
+				treeView.Items.Remove(sender);				
+			}
+
+			if (((TreeViewItem)sender).HasItems)
+			{
+				foreach (var assets in ((TreeViewItem)sender).Items)
+				{
+					_assetDatabaseHandler.Delete(((TreeViewItem)assets).Header.ToString());
+				}
+			}
+			_assetDatabaseHandler.Delete(((TreeViewItem)sender).Header.ToString());
+
 		}
 
 		private void Init()
