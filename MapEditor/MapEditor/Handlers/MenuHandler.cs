@@ -56,7 +56,7 @@ namespace MapEditor.Handlers
 
         private void MenuItem_new(object sender, RoutedEventArgs e)
         {
-            //var url = "{\"tiles\": [{\"id\":1, \"isObstacle\":true}]}";
+            _gameGridHandler.newMap();
         }
         private void MenuItem_save(object sender, RoutedEventArgs e)
         {

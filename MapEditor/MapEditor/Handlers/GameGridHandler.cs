@@ -109,13 +109,19 @@ namespace MapEditor.Handlers
 
                     jsonFile = _jsonHandler.Deserialize(jsonStr);
 
-                    //load and draw from JSON object();
+                    DrawToGridEvent();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Error: Could not read file from disk. Original error: " + ex.Message);
                 }
             }
+        }
+
+        public void newMap()
+        {
+            InitGameGrid();
+            DrawToGridEvent();
         }
 
 		private void InitGameGrid()
@@ -163,6 +169,21 @@ namespace MapEditor.Handlers
                 addToJsonList(currentGrid, assetData);
 			}
 		}
+
+        //Draw from json
+        private void DrawToGridEvent()
+        {
+            for(int i = 0; i < jsonFile.tiles.Count; i++) {
+                //Finner Bilde som tilhører id
+                var assetData = _assetDatabaseHandler.GetRowBy(jsonFile.tiles[i].id);
+
+                if (assetData == null) continue;
+
+                Grid currentGrid = (Grid)_editorGrid.Children[i];
+
+                currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(assetData.Image.ToArray()));
+            }
+        }
 
         private void addToJsonList(Grid g, Asset assetData)
         {
