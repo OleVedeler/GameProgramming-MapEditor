@@ -10,7 +10,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using MapEditor.Classes;
 using Microsoft.Win32;
-using System.IO;
 
 namespace MapEditor.Handlers
 {
@@ -23,12 +22,15 @@ namespace MapEditor.Handlers
 		private readonly AssetDatabaseHandler _assetDatabaseHandler;
 		private readonly TreeViewHandler _treeViewHandler;
         private readonly JsonHandler _jsonHandler;
+        private readonly PropertyHandler _propertyHandler;
 
 		public GameGridHandler(
 							Grid editorGrid, 
 							AssetDatabaseHandler assetDatabaseHandler, 
-							TreeViewHandler treeViewHandler)
+							TreeViewHandler treeViewHandler,
+                            PropertyHandler propertyHandler)
 		{
+            _propertyHandler = propertyHandler;
 			_editorGrid = editorGrid;
 			_assetDatabaseHandler = assetDatabaseHandler;
 			_treeViewHandler = treeViewHandler;
@@ -79,7 +81,6 @@ namespace MapEditor.Handlers
                 // Save document
                 string filename = save.FileName;
                     File.WriteAllText(filename, json);
-                    Console.WriteLine(json);
                 }
                 catch(Exception ex)
                 {
@@ -205,7 +206,9 @@ namespace MapEditor.Handlers
             jsonFile.tiles[_editorGrid.Children.IndexOf(g)].id = assetData.Id;
 
             //isObstacle
-            //Check if chekcbox is checked
+            if((bool)_propertyHandler.isObstacle.IsChecked) {
+                jsonFile.tiles[_editorGrid.Children.IndexOf(g)].isObstacle = 1;
+            }
         }
 
 	}

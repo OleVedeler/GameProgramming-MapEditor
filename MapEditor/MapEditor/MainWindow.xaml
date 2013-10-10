@@ -6,9 +6,15 @@
         <Menu Name="MainMenu" IsMainMenu="True"></Menu>
         <Grid Name="EditorGrid" HorizontalAlignment="Left" Height="425" Margin="175,23,0,0" VerticalAlignment="Top" Width="550" Background="White">
         </Grid>
-        <TreeView Name="ComponentsTreeView" HorizontalAlignment="Left" Height="192" Margin="10,23,0,0" VerticalAlignment="Top" Width="147"/>
+        <TreeView Name="ComponentsTreeView" HorizontalAlignment="Left" Height="192" Margin="10,23,0,0" VerticalAlignment="Top" Width="147">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
         <ListBox Margin="10,363,585,25">
-            <CheckBox x:Name="isObstacle" Content="Is Obstacle" Height="30" Width="120" FontSize="20" FlowDirection="RightToLeft" HorizontalContentAlignment="Right"/>
+            <CheckBox x:Name="isObstacle" Content="Is Obstacle" Height="30" Width="130" FontSize="20" FlowDirection="RightToLeft" HorizontalContentAlignment="Right"/>
         </ListBox>
 
         <Image Name="ShowcaseAsset" Margin="25,228,598,122"/>
