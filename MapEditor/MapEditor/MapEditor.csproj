@@ -60,6 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="Classes\ImportObject.cs" />
     <Compile Include="Handlers\GameGridHandler.cs" />
+    <Compile Include="Handlers\ImageHandler.cs" />
     <Compile Include="Handlers\JsonHandler.cs" />
     <Compile Include="Handlers\MenuHandler.cs" />
     <Compile Include="Handlers\TreeViewHandler.cs" />

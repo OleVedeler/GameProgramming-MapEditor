@@ -103,7 +103,7 @@ namespace MapEditor.Handlers
 				myBitmapImage.BeginInit();
 				myBitmapImage.StreamSource = memStream;
 				myBitmapImage.DecodePixelWidth = 374;
-				myBitmapImage.DecodePixelHeight = 500;
+				myBitmapImage.DecodePixelHeight = 374;
 				myBitmapImage.EndInit();
 				return myBitmapImage;
 			}
@@ -115,6 +115,5 @@ namespace MapEditor.Handlers
 			
 			return new BitmapImage();
 		}
-
 	}
 }

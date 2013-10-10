@@ -12,24 +12,35 @@ namespace MapEditor.Handlers
 {
 	class TreeViewHandler
 	{
-		private readonly TreeView _treeView;
+		public readonly TreeView _treeView;
 		private readonly AssetDatabaseHandler _assetDatabaseHandler;
+		private readonly ImageHandler _imageHandler;
 
 		public TreeViewHandler(
 						TreeView treeView, 
-						AssetDatabaseHandler assetDatabaseHandler)
+						AssetDatabaseHandler assetDatabaseHandler,
+						ImageHandler imageHandler)
 		{
 			_treeView = treeView;
 			_assetDatabaseHandler = assetDatabaseHandler;
+			_imageHandler = imageHandler;
 			Init();
+
+			_treeView.SelectedItemChanged += TreeViewOnSelectedItemChanged;
 		}
 
-
+		private void TreeViewOnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> routedPropertyChangedEventArgs)
+		{
+			Asset tempAsset = _assetDatabaseHandler.GetRowBy(((TreeViewItem) SelectedItem()).Header.ToString());
+			if (tempAsset == null) return;
+			_imageHandler.ShowcaseAsset(tempAsset);
+		}
 
 		public object SelectedItem()
 		{
 			return _treeView.SelectedItem;
 		}
+
 
 		/// <summary>
 		/// Legger DatabaseObjekter inn til TreeViewet. 
@@ -70,8 +81,6 @@ namespace MapEditor.Handlers
 
 		private void TreeItemOnClickEvent(object sender, RoutedEventArgs routedEventArgs)
 		{
-			
-
 			_treeView.Items.Remove(sender);
 
 			foreach (TreeViewItem treeView in _treeView.Items)
