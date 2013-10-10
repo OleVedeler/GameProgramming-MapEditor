@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -75,8 +76,8 @@ namespace MapEditor.Handlers
             {
                 try
                 {
-                    // Save document
-                    string filename = save.FileName;
+                // Save document
+                string filename = save.FileName;
                     File.WriteAllText(filename, json);
                     Console.WriteLine(json);
                 }
@@ -116,11 +117,11 @@ namespace MapEditor.Handlers
 
                     jsonFile = _jsonHandler.Deserialize(jsonStr);
                     DrawToGridEvent();
-                }
+            }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Error: Could not read file from disk. Original error: " + ex.Message);
-                }
+        }
             }
         }
 
@@ -207,5 +208,5 @@ namespace MapEditor.Handlers
             //Check if chekcbox is checked
         }
 
-    }
+	}
 }

@@ -16,9 +16,12 @@ namespace MapEditor
 		{
 			InitializeComponent();
 			AssetDatabaseHandler assetDatabaseHandler = new AssetDatabaseHandler();
-			TreeViewHandler treeViewHandler = new TreeViewHandler(ComponentsTreeView, assetDatabaseHandler);
+			ImageHandler imageHandler = new ImageHandler(ShowcaseAsset, assetDatabaseHandler);
+			TreeViewHandler treeViewHandler = new TreeViewHandler(ComponentsTreeView, assetDatabaseHandler, imageHandler);
 			GameGridHandler gameGridHandler = new GameGridHandler(EditorGrid, assetDatabaseHandler, treeViewHandler);
 			MenuHandler menuHandler = new MenuHandler(MainMenu, gameGridHandler, inputBox);
+			
+
 		}
 	}
 }

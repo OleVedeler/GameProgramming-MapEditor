@@ -53,6 +53,15 @@ namespace MapEditor.Handlers
 			_dataContext.Assets.DeleteAllOnSubmit(GetAllRows());
 			_dataContext.SubmitChanges();
 		}
+		
+		public void Delete(string name)
+		{
+			Asset row = GetRowBy(name);
+			if(row == null) return;
+
+			_dataContext.Assets.DeleteOnSubmit(row);
+			_dataContext.SubmitChanges();
+		}
 
 		public void Add(ImportObject i)
 		{
@@ -64,6 +73,10 @@ namespace MapEditor.Handlers
 			newAsset.Image = EncodeImage(bitmapImage);
 
 			_dataContext.Assets.InsertOnSubmit(newAsset);
+
+			//todo: håndtere navn duplikater
+			// legger inn 2 assets i databasen for en 
+			// eller annen grunn når du importer mer en en hver gang
 			_dataContext.SubmitChanges();
 		}
 
@@ -90,7 +103,7 @@ namespace MapEditor.Handlers
 				myBitmapImage.BeginInit();
 				myBitmapImage.StreamSource = memStream;
 				myBitmapImage.DecodePixelWidth = 374;
-				myBitmapImage.DecodePixelHeight = 500;
+				myBitmapImage.DecodePixelHeight = 374;
 				myBitmapImage.EndInit();
 				return myBitmapImage;
 			}
@@ -102,6 +115,5 @@ namespace MapEditor.Handlers
 			
 			return new BitmapImage();
 		}
-
 	}
 }
