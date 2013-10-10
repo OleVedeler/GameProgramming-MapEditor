@@ -48,7 +48,7 @@ namespace MapEditor.Handlers
 				// returnerer hvis den har lagt til elementet
 				for (int i = 0; i < _treeView.Items.Count; i++)
 				{
-					// Todo: Fix Feil med spaceing. 
+					// Todo: Fix Feil med spacing. 
 					// eks. Landskap og Landskap2 vil bli det samme grunnet Contains
 					if ((!((string) treeViewList[i].Header).Contains(parentItem.Header.ToString())))
 						continue;

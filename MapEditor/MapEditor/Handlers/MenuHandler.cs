@@ -12,7 +12,6 @@ namespace MapEditor.Handlers
 {
     class MenuHandler
     {
-
         private readonly GameGridHandler _gameGridHandler;
         private readonly Menu _mainMenu;
         private readonly Grid _inputBox;
@@ -24,12 +23,10 @@ namespace MapEditor.Handlers
             _mainMenu = mainMenu;
             _inputBox = inputBox;
             Init();
-
         }
 
         private void Init()
         {
-
             MenuItem file = new MenuItem { Header = "_File", Name = "File" };
             _mainMenu.Items.Add(file);
 
@@ -94,7 +91,6 @@ namespace MapEditor.Handlers
         private void MenuItem_exit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
-
         }
 
         private void YesClick(object sender, RoutedEventArgs e)
@@ -107,6 +103,9 @@ namespace MapEditor.Handlers
             _inputBox.Visibility = Visibility.Collapsed;
 
             _gameGridHandler.import(imp);
+
+            ((TextBox)_inputBox.FindName("InputParent")).Text = "";
+            ((TextBox)_inputBox.FindName("InputName")).Text = "";
         }
 
         private void NoClick(object sender, RoutedEventArgs e)

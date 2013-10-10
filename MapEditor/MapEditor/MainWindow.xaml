@@ -7,9 +7,9 @@
         <Grid Name="EditorGrid" HorizontalAlignment="Left" Height="425" Margin="175,23,0,0" VerticalAlignment="Top" Width="550" Background="White"/>
         <TreeView Name="ComponentsTreeView" HorizontalAlignment="Left" Height="336" Margin="10,23,0,0" VerticalAlignment="Top" Width="147"/>
         <ListBox Margin="10,363,585,25">
-            <CheckBox x:Name="isObstacle" Content="Is Obstacle" Height="30" Width="138" FontSize="20" FlowDirection="RightToLeft" HorizontalContentAlignment="Right"/>
+            <CheckBox x:Name="isObstacle" Content="Is Obstacle" Height="30" Width="120" FontSize="20" FlowDirection="RightToLeft" HorizontalContentAlignment="Right"/>
         </ListBox>
-        <Grid x:Name="inputBox" Visibility="Collapsed">
+        <Grid x:Name="inputBox" Visibility="Visible">
             <Grid Background="LightGray" Opacity="0.5"/>
             <Border
             MinWidth="250"
@@ -25,8 +25,8 @@
                     <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="InputName"/>
                     
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button x:Name="YesButton" Margin="5" Content="Ok" Background="Gray" />
-                        <Button x:Name="NoButton" Margin="5" Content="Cancel" Background="Gray" />
+                        <Button x:Name="YesButton" Margin="5" Content="Ok" Background="Gray" Width="50"/>
+                        <Button x:Name="NoButton" Margin="5" Content="Cancel" Background="Gray" Width="50"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

@@ -73,10 +73,17 @@ namespace MapEditor.Handlers
             // Process save file dialog box results
             if (result == true)
             {
-                // Save document
-                string filename = save.FileName;
-                File.WriteAllText(filename, json);
-                Console.WriteLine(json);
+                try
+                {
+                    // Save document
+                    string filename = save.FileName;
+                    File.WriteAllText(filename, json);
+                    Console.WriteLine(json);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("Error: Could not read to file. Original error: " + ex.Message);
+                }
             }
         }
 
@@ -86,10 +93,8 @@ namespace MapEditor.Handlers
             OpenFileDialog open = new OpenFileDialog();
             string jsonStr = "";
 
-            open.InitialDirectory = "c:\\";
             open.Filter = "JSON files (.json)|*.json";
             open.FilterIndex = 2;
-            open.RestoreDirectory = true;
 
             Nullable<bool> result = open.ShowDialog();
 
@@ -107,8 +112,9 @@ namespace MapEditor.Handlers
                         }
                     }
 
-                    jsonFile = _jsonHandler.Deserialize(jsonStr);
+                    newMap();
 
+                    jsonFile = _jsonHandler.Deserialize(jsonStr);
                     DrawToGridEvent();
                 }
                 catch (Exception ex)
@@ -121,14 +127,16 @@ namespace MapEditor.Handlers
         public void newMap()
         {
             InitGameGrid();
-            DrawToGridEvent();
         }
 
 		private void InitGameGrid()
 		{
-			for (int column = 0; column < Width(); column++)
+            jsonFile.tiles.Clear();
+            _editorGrid.Children.Clear();
+
+			for (int column = 0; column < Height(); column++)
 			{
-				for (int row = 0; row < Height(); row++)
+				for (int row = 0; row < Width(); row++)
 				{
 					Grid childGrid = new Grid
 					{
@@ -153,6 +161,7 @@ namespace MapEditor.Handlers
 		{
 			//tester om noe har blitt valgt
 			if ((_treeViewHandler.SelectedItem()) == null) return;
+        
 			string selectedName = ((TreeViewItem)_treeViewHandler.SelectedItem()).Header.ToString();
 
 			//Finner Bilde som tilhører  navnet
@@ -173,22 +182,26 @@ namespace MapEditor.Handlers
         //Draw from json
         private void DrawToGridEvent()
         {
+            var assetData = _assetDatabaseHandler.GetAllRows();
+            
             for(int i = 0; i < jsonFile.tiles.Count; i++) {
-                //Finner Bilde som tilhører id
-                var assetData = _assetDatabaseHandler.GetRowBy(jsonFile.tiles[i].id);
-
-                if (assetData == null) continue;
+                if (assetData == null) return;
 
                 Grid currentGrid = (Grid)_editorGrid.Children[i];
 
-                currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(assetData.Image.ToArray()));
+                using (var enumerator = assetData.GetEnumerator())
+				while (enumerator.MoveNext()) {
+                    if(jsonFile.tiles[i].id == enumerator.Current.Id) {
+                        currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(enumerator.Current.Image.ToArray()));
+                    }
+                }
             }
         }
 
         private void addToJsonList(Grid g, Asset assetData)
         {
             //id
-            jsonFile.tiles.ElementAt(_editorGrid.Children.IndexOf(g)).id = assetData.Id;
+            jsonFile.tiles[_editorGrid.Children.IndexOf(g)].id = assetData.Id;
 
             //isObstacle
             //Check if chekcbox is checked
