@@ -74,7 +74,7 @@ namespace MapEditor.Handlers
 				{
 					// Todo: Fix Feil med spacing. 
 					// eks. Landskap og Landskap2 vil bli det samme grunnet Contains
-					if ((!((string) treeViewList[i].Header).Contains(parentItem.Header.ToString())))
+					if ((((string) treeViewList[i].Header).TrimEnd(' ') != (parentItem.Header.ToString().TrimEnd(' '))))
 						continue;
 
 					((TreeViewItem) _treeView.Items[i]).Items.Add(newItem);
@@ -82,8 +82,8 @@ namespace MapEditor.Handlers
 				}
 			}
 
-			_treeView.Items.Add(parentItem);
-			parentItem.Items.Add(newItem);
+			_treeView.Items.Add((TreeViewItem)parentItem);
+			parentItem.Items.Add((TreeViewItem)newItem);
 		}
 
 		private void TreeItemOnClickEvent(object sender, RoutedEventArgs routedEventArgs)
