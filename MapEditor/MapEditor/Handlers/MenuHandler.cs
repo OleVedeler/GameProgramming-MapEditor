@@ -27,6 +27,7 @@ namespace MapEditor.Handlers
 
         private void Init()
         {
+            Separator s = new Separator();
             MenuItem file = new MenuItem { Header = "_File", Name = "File" };
             _mainMenu.Items.Add(file);
 
@@ -42,13 +43,25 @@ namespace MapEditor.Handlers
             saveItem.Click += MenuItem_save;
             file.Items.Add(saveItem);
 
+            file.Items.Add(s);
+
             MenuItem importItem = new MenuItem { Header = "_Import", Name = "import" };
             importItem.Click += MenuItem_import;
             file.Items.Add(importItem);
 
+            s = new Separator();
+            file.Items.Add(s);
+
             MenuItem exitItem = new MenuItem { Header = "_Exit", Name = "exit" };
             exitItem.Click += MenuItem_exit;
             file.Items.Add(exitItem);
+
+            MenuItem view = new MenuItem { Header = "_View", Name = "View" };
+            _mainMenu.Items.Add(view);
+            
+            MenuItem obstacles = new MenuItem { Header = "_Show Collisionmap", Name = "ShowCollisionmap", IsCheckable = true };
+            exitItem.Click += MenuItem_showCollisionmap;
+            view.Items.Add(obstacles);
         }
 
         private void MenuItem_new(object sender, RoutedEventArgs e)
@@ -69,7 +82,7 @@ namespace MapEditor.Handlers
             OpenFileDialog file = new OpenFileDialog();
 
             file.DefaultExt = ".jpg";
-            file.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg";
+            file.Filter = "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png";
 
             Nullable<bool> result = file.ShowDialog();
 
@@ -110,6 +123,11 @@ namespace MapEditor.Handlers
         private void NoClick(object sender, RoutedEventArgs e)
         {
             _inputBox.Visibility = Visibility.Collapsed;
+        }
+
+        private void MenuItem_showCollisionmap(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

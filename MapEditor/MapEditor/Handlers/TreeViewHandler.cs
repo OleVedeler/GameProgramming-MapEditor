@@ -31,6 +31,7 @@ namespace MapEditor.Handlers
 
 		private void TreeViewOnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> routedPropertyChangedEventArgs)
 		{
+            if (SelectedItem() == null) return;
 			Asset tempAsset = _assetDatabaseHandler.GetRowBy(((TreeViewItem) SelectedItem()).Header.ToString());
 			if (tempAsset == null) return;
 			_imageHandler.ShowcaseAsset(tempAsset);

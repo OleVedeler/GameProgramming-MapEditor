@@ -2,10 +2,10 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="LinqToAsset">
   <DataContextMoniker Name="/LinqToAssetDataContext" />
   <nestedChildShapes>
-    <classShape Id="521d31da-d9a4-4aa0-ad47-c5fdac679955" absoluteBounds="4.125, 1.375, 2, 1.5785953776041666">
+    <classShape Id="e002316c-3f11-4994-bea1-21a429f3bd60" absoluteBounds="2.625, 1.5, 2, 1.4248478190104168">
       <DataClassMoniker Name="/LinqToAssetDataContext/Asset" />
       <nestedChildShapes>
-        <elementListCompartment Id="9553c734-1516-4cac-9ea4-f3add223f85e" absoluteBounds="4.14, 1.835, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="24f072d1-9b0d-4e94-a11d-32bded9a7950" absoluteBounds="2.6399999999999997, 1.96, 1.9700000000000002, 0.86484781901041674" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

@@ -63,6 +63,7 @@
     <Compile Include="Handlers\ImageHandler.cs" />
     <Compile Include="Handlers\JsonHandler.cs" />
     <Compile Include="Handlers\MenuHandler.cs" />
+    <Compile Include="Handlers\PropertyHandler.cs" />
     <Compile Include="Handlers\TreeViewHandler.cs" />
     <Compile Include="TreeItem.cs" />
     <Page Include="MainWindow.xaml">
