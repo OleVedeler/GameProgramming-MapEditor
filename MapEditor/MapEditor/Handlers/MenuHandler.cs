@@ -110,14 +110,13 @@ namespace MapEditor.Handlers
 
         private void YesClick(object sender, RoutedEventArgs e)
         {
-            imp.parent = ((TextBox)_inputBox.FindName("InputParent")).Text;
-            imp.name = ((TextBox)_inputBox.FindName("InputName")).Text;
+		    imp.parent = ((TextBox) _inputBox.FindName("InputParent")).Text;
+		    imp.name = ((TextBox) _inputBox.FindName("InputName")).Text;
 
-            Console.Write("Name: " + imp.name + " | Parent: " + imp.parent + " | Filename: " + imp.filename);
+			Console.Write("Name: " + imp.name + " | Parent: " + imp.parent + " | Filename: " + imp.filename);
 
-            _inputBox.Visibility = Visibility.Collapsed;
-
-            _gameGridHandler.import(imp);
+            _inputBox.Visibility = Visibility.Collapsed; 
+			_gameGridHandler.import(imp);
 
             ((TextBox)_inputBox.FindName("InputParent")).Text = "";
             ((TextBox)_inputBox.FindName("InputName")).Text = "";
