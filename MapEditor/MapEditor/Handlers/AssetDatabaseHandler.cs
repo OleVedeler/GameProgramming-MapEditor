@@ -63,14 +63,33 @@ namespace MapEditor.Handlers
 			_dataContext.SubmitChanges();
 		}
 
+		public bool Contains(string name)
+		{
+			var assets = GetAllRows();
+
+			using (var enumerator = assets.GetEnumerator())
+				while (enumerator.MoveNext())
+				{
+					if (enumerator.Current.Name.Trim(' ') == name.Trim(' '))
+					{
+						return true;
+					}
+				}
+			return false;
+		}
+
 		public void Add(ImportObject i)
 		{
+			if (Contains(i.name)) return;
 			Asset newAsset = new Asset();
 			BitmapImage bitmapImage = new BitmapImage(new Uri(i.filename));
+
 
 			newAsset.Name = i.name;
 			newAsset.Parent = i.parent;
 			newAsset.Image = EncodeImage(bitmapImage);
+
+
 
 			_dataContext.Assets.InsertOnSubmit(newAsset);
 
