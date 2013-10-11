@@ -17,6 +17,7 @@ namespace MapEditor.Handlers
 	{
 		private const int PixelWidth = 25;
 		private const int PixelHeight = 25;
+        private bool showCollision;
         private JSON jsonFile;
         private readonly Grid _editorGrid;
 		private readonly AssetDatabaseHandler _assetDatabaseHandler;
@@ -122,13 +123,32 @@ namespace MapEditor.Handlers
                 catch (Exception ex)
                 {
                     Console.WriteLine("Error: Could not read file from disk. Original error: " + ex.Message);
-        }
+                }
             }
         }
 
         public void newMap()
         {
             InitGameGrid();
+        }
+
+        public void showCollisionmap(bool show) 
+        {
+            showCollision = show;
+            for (int i = 0; i < jsonFile.tiles.Count; i++)
+            {
+                Grid currentGrid = (Grid)_editorGrid.Children[i];
+                if (showCollision)
+                {
+                    if ((jsonFile.tiles[i].isObstacle == 0) && (jsonFile.tiles[i].id != 0))
+                        currentGrid.Background.Opacity = 0.3;
+                }
+                else
+                {
+                    if(jsonFile.tiles[i].id != 0)
+                        currentGrid.Background.Opacity = 1;
+                }
+            }
         }
 
 		private void InitGameGrid()
@@ -177,6 +197,10 @@ namespace MapEditor.Handlers
 			if (e.LeftButton == MouseButtonState.Pressed)
 			{
 				currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(assetData.Image.ToArray()));
+                if(showCollision && !((bool)_propertyHandler._isObstacle.IsChecked))
+                {
+                    currentGrid.Background.Opacity = 0.3;
+                }
                 addToJsonList(currentGrid, assetData);
 			}
 		}
@@ -206,8 +230,13 @@ namespace MapEditor.Handlers
             jsonFile.tiles[_editorGrid.Children.IndexOf(g)].id = assetData.Id;
 
             //isObstacle
-            if((bool)_propertyHandler.isObstacle.IsChecked) {
+            if ((bool)_propertyHandler._isObstacle.IsChecked)
+            {
                 jsonFile.tiles[_editorGrid.Children.IndexOf(g)].isObstacle = 1;
+            }
+            else
+            {
+                jsonFile.tiles[_editorGrid.Children.IndexOf(g)].isObstacle = 0;
             }
         }
 

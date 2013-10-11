@@ -13,8 +13,10 @@
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
-        <ListBox Margin="10,363,585,25">
-            <CheckBox x:Name="isObstacle" Content="Is Obstacle" Height="30" Width="130" FontSize="20" FlowDirection="RightToLeft" HorizontalContentAlignment="Right"/>
+        <ListBox Margin="10,363,585,25" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <CheckBox x:Name="isObstacle" Content="Is Obstacle" Height="27" Width="127" FlowDirection="RightToLeft" HorizontalContentAlignment="Right"/>
+            <TextBlock x:Name="nameText" TextWrapping="Wrap" Height="26" Width="117"><Run Text="Asset "/><Run Text="Name"/></TextBlock>
+            <TextBlock x:Name="pathText" TextWrapping="Wrap" Text="Asset Path" Height="26" Width="117"/>
         </ListBox>
 
         <Image Name="ShowcaseAsset" Margin="25,228,598,122"/>
@@ -32,7 +34,7 @@
                     <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="InputParent"/>
                     <TextBlock Margin="5" Text="Name:" />
                     <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="InputName"/>
-                    
+
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button x:Name="YesButton" Margin="5" Content="Ok" Background="Gray" Width="50"/>
                         <Button x:Name="NoButton" Margin="5" Content="Cancel" Background="Gray" Width="50"/>

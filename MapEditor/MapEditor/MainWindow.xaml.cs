@@ -15,10 +15,10 @@ namespace MapEditor
 		public MainWindow()
 		{
 			InitializeComponent();
-            PropertyHandler propertyHandler = new PropertyHandler(isObstacle);
+            PropertyHandler propertyHandler = new PropertyHandler(isObstacle, nameText, pathText);
 			AssetDatabaseHandler assetDatabaseHandler = new AssetDatabaseHandler();
 			ImageHandler imageHandler = new ImageHandler(ShowcaseAsset, assetDatabaseHandler);
-			TreeViewHandler treeViewHandler = new TreeViewHandler(ComponentsTreeView, assetDatabaseHandler, imageHandler);
+			TreeViewHandler treeViewHandler = new TreeViewHandler(ComponentsTreeView, assetDatabaseHandler, imageHandler, propertyHandler);
 			GameGridHandler gameGridHandler = new GameGridHandler(EditorGrid, assetDatabaseHandler, treeViewHandler, propertyHandler);
 			MenuHandler menuHandler = new MenuHandler(MainMenu, gameGridHandler, inputBox);
 		}

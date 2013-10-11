@@ -15,15 +15,18 @@ namespace MapEditor.Handlers
 		public readonly TreeView _treeView;
 		private readonly AssetDatabaseHandler _assetDatabaseHandler;
 		private readonly ImageHandler _imageHandler;
+        private readonly PropertyHandler _propertyHandler;
 
 		public TreeViewHandler(
 						TreeView treeView, 
 						AssetDatabaseHandler assetDatabaseHandler,
-						ImageHandler imageHandler)
+						ImageHandler imageHandler,
+                        PropertyHandler propertyHandler)
 		{
 			_treeView = treeView;
 			_assetDatabaseHandler = assetDatabaseHandler;
 			_imageHandler = imageHandler;
+            _propertyHandler = propertyHandler;
 			Init();
 
 			_treeView.SelectedItemChanged += TreeViewOnSelectedItemChanged;
@@ -35,6 +38,9 @@ namespace MapEditor.Handlers
 			Asset tempAsset = _assetDatabaseHandler.GetRowBy(((TreeViewItem) SelectedItem()).Header.ToString());
 			if (tempAsset == null) return;
 			_imageHandler.ShowcaseAsset(tempAsset);
+
+            //_propertyHandler._nameText.Text = "Name: " + tempAsset.Name;
+            //_propertyHandler._pathText.Text = "Path: " + tempAsset.Image;
 		}
 
 		public object SelectedItem()

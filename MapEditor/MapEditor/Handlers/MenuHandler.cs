@@ -16,12 +16,14 @@ namespace MapEditor.Handlers
         private readonly Menu _mainMenu;
         private readonly Grid _inputBox;
         private ImportObject imp;
+        private bool showCollisions;
 
         public MenuHandler(Menu mainMenu, GameGridHandler gameGridHandler, Grid inputBox)
         {
             _gameGridHandler = gameGridHandler;
             _mainMenu = mainMenu;
             _inputBox = inputBox;
+            showCollisions = false;
             Init();
         }
 
@@ -60,7 +62,7 @@ namespace MapEditor.Handlers
             _mainMenu.Items.Add(view);
             
             MenuItem obstacles = new MenuItem { Header = "_Show Collisionmap", Name = "ShowCollisionmap", IsCheckable = true };
-            exitItem.Click += MenuItem_showCollisionmap;
+            obstacles.Click += MenuItem_showCollisionmap;
             view.Items.Add(obstacles);
         }
 
@@ -128,7 +130,8 @@ namespace MapEditor.Handlers
 
         private void MenuItem_showCollisionmap(object sender, RoutedEventArgs e)
         {
-
+            showCollisions = !showCollisions;
+            _gameGridHandler.showCollisionmap(showCollisions);
         }
     }
 }
