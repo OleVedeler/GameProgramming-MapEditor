@@ -53,11 +53,9 @@ namespace MapEditor.Handlers
 			if (!visible){
 				(PropertyBox.Items[0] as ListBoxItem).Visibility = Visibility.Collapsed;
 				(PropertyBox.Items[1] as CheckBox).Visibility = Visibility.Collapsed;
-				PropertyBox.Visibility = Visibility.Collapsed;
 			} else {
 				(PropertyBox.Items[0] as ListBoxItem).Visibility = Visibility.Visible;
 				(PropertyBox.Items[1] as CheckBox).Visibility = Visibility.Visible;
-				PropertyBox.Visibility = Visibility.Visible;
 			}
 		}
 	}

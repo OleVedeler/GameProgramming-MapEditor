@@ -54,7 +54,6 @@ namespace MapEditor.Handlers
 
 		public Asset GetRowBy(int id)
 		{
-
 			for (int i = 0; i < _assetList.Count; i++)
 			{
 				if (_assetList[i].Id == id)
