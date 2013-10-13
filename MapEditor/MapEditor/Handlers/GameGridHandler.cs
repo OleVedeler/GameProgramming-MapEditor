@@ -53,12 +53,19 @@ namespace MapEditor.Handlers
 			return (int) (_editorGrid.Height/PixelHeight);
 		}
 
+		/// <summary>
+		/// adds the asset to the database, then updates the treeview
+		/// </summary>
+		/// <param name="imp"></param>
         public void Import(ImportObject imp)
         {
             _assetDatabaseHandler.Add(imp);
             _treeViewHandler.Update();
         }
 
+		/// <summary>
+		/// askes for path to save it to and saves as a json file
+		/// </summary>
         public void Save()
         {
 	        string json = _jsonHandler.JsonString();
@@ -88,6 +95,9 @@ namespace MapEditor.Handlers
             }
         }
 
+		/// <summary>
+		/// Askes for a filepath, then loads the choosen .json file and drawes it to the map
+		/// </summary>
         public void Load()
         {
             Stream stream = null;
@@ -127,11 +137,19 @@ namespace MapEditor.Handlers
             }
         }
 
+
+		/// <summary>
+		/// initializes the editor grid again
+		/// </summary>
         public void NewMap()
         {
             InitGameGrid();
         }
 
+		/// <summary>
+		/// sets low opacity on the grids that are obstacles
+		/// </summary>
+		/// <param name="show"></param>
         public void ShowCollisionmap(bool show) 
         {
             _showCollision = show;
@@ -151,6 +169,9 @@ namespace MapEditor.Handlers
             }
         }
 
+		/// <summary>
+		/// clears the grid and the json file and draws everything black
+		/// </summary>
 		private void InitGameGrid()
 		{
             _jsonHandler.Tiles().Clear();
@@ -179,20 +200,21 @@ namespace MapEditor.Handlers
 			}
 		}
 
+		/// <summary>
+		/// finds the grid that was clicked and draws it with the choosen assets image
+		/// </summary>
+		/// <param name="o"></param>
+		/// <param name="e"></param>
 		private void DrawToGridEvent(Object o, MouseEventArgs e)
 		{
-			//tester om noe har blitt valgt
 			if ((_treeViewHandler.SelectedItem()) == null) return;
         
 			string selectedName = ((TreeViewItem)_treeViewHandler.SelectedItem()).Header.ToString();
 
-			//Finner Bilde som tilhører  navnet
 			var assetData = _assetDatabaseHandler.GetRowBy(selectedName);
 
-			// Tester om valgt element finnes i databasen
 			if(assetData == null) return;
 
-			// Tegner på sub griddene
 			Grid currentGrid = (Grid)o;
 			if (e.LeftButton == MouseButtonState.Pressed)
 			{
@@ -201,11 +223,13 @@ namespace MapEditor.Handlers
                 {
                     currentGrid.Background.Opacity = 0.3;
                 }
-                addToJsonList(currentGrid, assetData);
+                AddToJsonList(currentGrid, assetData);
 			}
 		}
 
-        //Draw from json
+        /// <summary>
+        ///  Draws from the json input instead of user input
+        /// </summary>
         private void DrawToGridEvent()
         {
             var assetData = _assetDatabaseHandler.GetAllRows();
@@ -224,7 +248,13 @@ namespace MapEditor.Handlers
             }
         }
 
-        private void addToJsonList(Grid g, Asset assetData)
+		/// <summary>
+		/// Adds the position in the editor grid the asset id will be stored
+		/// adds if its a obstacle or not
+		/// </summary>
+		/// <param name="g"></param>
+		/// <param name="assetData"></param>
+        private void AddToJsonList(Grid g, Asset assetData)
         {
             //id
             _jsonHandler.Tiles()[_editorGrid.Children.IndexOf(g)].id = assetData.Id;

@@ -65,7 +65,7 @@ namespace MapEditor.Handlers
             obstacles.Click += MenuItem_showCollisionmap;
             view.Items.Add(obstacles);
         }
-
+		/// eventhandlers for the menues, delegates the work to other classes
         private void MenuItem_new(object sender, RoutedEventArgs e)
         {
             _gameGridHandler.NewMap();
@@ -78,7 +78,12 @@ namespace MapEditor.Handlers
         {
             _gameGridHandler.Load();
         }
-        private void MenuItem_import(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Asks for a filepath and sets two events that waits for an answer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+		private void MenuItem_import(object sender, RoutedEventArgs e)
 		{
             _imp = new ImportObject();
             OpenFileDialog file = new OpenFileDialog
@@ -99,16 +104,18 @@ namespace MapEditor.Handlers
                 ((Button)_inputBox.FindName("YesButton")).Click += YesClick;
                 ((Button)_inputBox.FindName("NoButton")).Click += NoClick;
             }
-            else
-            {
-                //ERROR
-            }
 		}
         private void MenuItem_exit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
+		/// <summary>
+		/// gets the name and parent of the new asset. then it closes the dialog 
+		/// and delegates the work
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
         private void YesClick(object sender, RoutedEventArgs e)
         {
 		    _imp.parent = ((TextBox) _inputBox.FindName("InputParent")).Text;
@@ -123,12 +130,21 @@ namespace MapEditor.Handlers
             ((TextBox)_inputBox.FindName("InputParent")).Text = "";
             ((TextBox)_inputBox.FindName("InputName")).Text = "";
         }
-
+		
+		/// <summary>
+		/// Closes the dialog
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
         private void NoClick(object sender, RoutedEventArgs e)
         {
             _inputBox.Visibility = Visibility.Collapsed;
         }
-
+		/// <summary>
+		/// Turns on and off the collisionmap
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
         private void MenuItem_showCollisionmap(object sender, RoutedEventArgs e)
         {
             _showCollisions = !_showCollisions;

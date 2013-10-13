@@ -25,6 +25,9 @@ namespace MapEditor.Handlers
 			return _assetList;
 		}
 
+		/// <summary>
+		/// Gets all rows from the database and stores it in a list
+		/// </summary>
 		private void GetFromDatabase()
 		{
 			_assetList = (
@@ -33,6 +36,11 @@ namespace MapEditor.Handlers
 				).ToList();
 		}
 
+		/// <summary>
+		/// gets a single row from the database
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
 		private Asset GetRowFromDatabase(string name)
 		{
 			return (
@@ -42,6 +50,11 @@ namespace MapEditor.Handlers
 				).First();
 		}
 
+		/// <summary>
+		/// gets a row from the assetlist
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
 		public Asset GetRowBy(String name)
 		{
 			for (int i = 0; i < _assetList.Count; i++)
@@ -63,12 +76,10 @@ namespace MapEditor.Handlers
 
 		} 
 
-		public void DeleteAll()
-		{
-			_dataContext.Assets.DeleteAllOnSubmit(GetAllRows());
-			_dataContext.SubmitChanges();
-		}
-		
+		/// <summary>
+		/// Deletes a row from the database
+		/// </summary>
+		/// <param name="name"></param>
 		public void Delete(string name)
 		{
 			Asset row = GetRowBy(name);
@@ -83,6 +94,12 @@ namespace MapEditor.Handlers
 			return _assetList.Any(t => t.Name.Trim(' ') == name.Trim(' '));
 		}
 
+
+		/// <summary>
+		/// Adds a new asset to the database 
+		/// then adds the single row into the assetlist
+		/// </summary>
+		/// <param name="i"></param>
 		public void Add(ImportObject i)
 		{
 			if (Contains(i.name)) return;
@@ -92,21 +109,18 @@ namespace MapEditor.Handlers
 			newAsset.Name = i.name;
 			newAsset.Parent = i.parent;
 			newAsset.Image = EncodeImage(bitmapImage);
-
-
 			
 			_dataContext.Assets.InsertOnSubmit(newAsset);
-			
-			//todo: håndtere navn duplikater
-			// legger inn 2 assets i databasen for en 
-			// eller annen grunn når du importer mer en en hver gang
 			_dataContext.SubmitChanges();
-
-			// Trengs for å få med indexen
 			_assetList.Add(GetRowFromDatabase(newAsset.Name));
 			
 		}
 
+		/// <summary>
+		/// converts the image into a byte array that the database can read
+		/// </summary>
+		/// <param name="image"></param>
+		/// <returns></returns>
 		public Byte[] EncodeImage(BitmapImage image)
 		{
 			MemoryStream memStream = new MemoryStream();
@@ -117,6 +131,11 @@ namespace MapEditor.Handlers
 			return bytestream;
 		}
 
+		/// <summary>
+		/// Converts the database byte array back into a image
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		public BitmapImage DecodeImage(byte[] value)
 		{
 			//TODO: Må fikses med exceptions
@@ -136,7 +155,6 @@ namespace MapEditor.Handlers
 			}
 			catch (Exception e)
 			{
-				// TODO: Skriv errormelding til egen fil, slik at det kan evalueres!
 				Console.WriteLine(e.ToString());
 			}
 			

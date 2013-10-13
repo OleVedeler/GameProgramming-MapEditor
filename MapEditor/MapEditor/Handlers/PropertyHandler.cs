@@ -25,12 +25,14 @@ namespace MapEditor.Handlers
 					_propertyBox = value;
 				}
 				_propertyBox.Items.Clear();
-
 				for (int index = 0; index < value.Items.Count; index++)
 				{
-					var item = new CheckBox();
-					item.Content = ((ListBoxItem)value.Items[index]).Content;
-					item.IsChecked = ((CheckBox)value.Items[index]).IsChecked;
+					// makes a copy because Listbox items can only have one parent and we want it in two lists
+					var item = new CheckBox
+					{
+						Content = ((ListBoxItem) value.Items[index]).Content,
+						IsChecked = ((CheckBox) value.Items[index]).IsChecked
+					};
 
 					_propertyBox.Items.Add(item);
 				}
@@ -42,12 +44,15 @@ namespace MapEditor.Handlers
     {
 	        PropertyBox = propertyBox;
 	        Name = name;
-            ObsticalCheckBox = new CheckBox {Content = "Is Obsticle"};
+			ObsticalCheckBox = new CheckBox { Content = "Is obstacle" };
 			PropertyBox.Items.Add(new ListBoxItem { Content = Name });
 	        PropertyBox.Items.Add(ObsticalCheckBox);
 			SetVisability(false);
         }
-
+		/// <summary>
+		/// Sets if the items in the listbox will be active or not
+		/// </summary>
+		/// <param name="visible"></param>
 		public void SetVisability(bool visible)
         {
 			if (!visible){

@@ -22,8 +22,8 @@ namespace MapEditor
 			base.Header = header;
 			PropertyHandler = new PropertyHandler(new ListBox(), header);
 
-			MenuItem obsticelItem = new MenuItem { Header = "_Set as obsticel", IsCheckable = true };
-			obsticelItem.Click += obsticelItem_Click;
+			MenuItem obsticelItem = new MenuItem { Header = "_Set as obstacle", IsCheckable = true };
+			obsticelItem.Click += obstacleItem_Click;
 
 			MenuItem deleteItem = new MenuItem { Header = "_Delete" };
 			deleteItem.Click += DeleteItemOnClick;
@@ -33,11 +33,23 @@ namespace MapEditor
 			base.ContextMenu.Items.Add(deleteItem);
 		}
 
-		void obsticelItem_Click(object sender, RoutedEventArgs routedEventArgs)
+		/// <summary>
+		/// sends back an event that can be handled in other classes
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="routedEventArgs"></param>
+		void obstacleItem_Click(object sender, RoutedEventArgs routedEventArgs)
 		{
 			OnClickEvent(sender, routedEventArgs);
 		}
 
+
+		/// <summary>
+		/// sends back an event that can be handled in other classes
+		/// Askes if you realy want to delete the item
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="routedEventArgs"></param>
 		private void DeleteItemOnClick(object sender, RoutedEventArgs routedEventArgs)
 		{
 			MessageBoxResult result = 

@@ -22,7 +22,10 @@ namespace MapEditor.Handlers
 			_assetDatabase = assetDatabase;
 			_image = image;
 		}
-
+		/// <summary>
+		/// Shows the selectedElements image
+		/// </summary>
+		/// <param name="asset"></param>
 		public void ShowcaseAsset(Asset asset)
 		{
 			_image.Source = _assetDatabase.DecodeImage(asset.Image.ToArray());
