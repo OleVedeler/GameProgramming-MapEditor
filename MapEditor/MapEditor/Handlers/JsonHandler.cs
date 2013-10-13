@@ -13,7 +13,6 @@ namespace MapEditor.Handlers
 {
 	class JsonHandler
 	{
-
 		public JSON _jsonFile { get; set; }
 
 		public JsonHandler()
