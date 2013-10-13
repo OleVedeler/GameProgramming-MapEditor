@@ -17,8 +17,7 @@ namespace MapEditor.Handlers
 	{
 		private const int PixelWidth = 25;
 		private const int PixelHeight = 25;
-        private bool showCollision;
-        private JSON jsonFile;
+        private bool _showCollision;
         private readonly Grid _editorGrid;
 		private readonly AssetDatabaseHandler _assetDatabaseHandler;
 		private readonly TreeViewHandler _treeViewHandler;
@@ -36,7 +35,6 @@ namespace MapEditor.Handlers
 			_assetDatabaseHandler = assetDatabaseHandler;
 			_treeViewHandler = treeViewHandler;
             _jsonHandler = new JsonHandler();
-            jsonFile = new JSON();
 			InitGameGrid();
 		}
 
@@ -55,15 +53,15 @@ namespace MapEditor.Handlers
 			return (int) (_editorGrid.Height/PixelHeight);
 		}
 
-        public void import(ImportObject imp)
+        public void Import(ImportObject imp)
         {
             _assetDatabaseHandler.Add(imp);
             _treeViewHandler.Update();
         }
 
-        public void save() 
+        public void Save()
         {
-            string json = _jsonHandler.Serialize(jsonFile);
+	        string json = _jsonHandler.JsonString();
 
             SaveFileDialog save = new SaveFileDialog();
 
@@ -90,7 +88,7 @@ namespace MapEditor.Handlers
             }
         }
 
-        public void load()
+        public void Load()
         {
             Stream stream = null;
             OpenFileDialog open = new OpenFileDialog();
@@ -116,9 +114,8 @@ namespace MapEditor.Handlers
                         }
                     }
 
-                    newMap();
-
-                    jsonFile = _jsonHandler.Deserialize(jsonStr);
+                    NewMap();
+					_jsonHandler.Deserialize(jsonStr);
                     DrawToGridEvent();
             }
                 catch (Exception ex)
@@ -130,25 +127,25 @@ namespace MapEditor.Handlers
             }
         }
 
-        public void newMap()
+        public void NewMap()
         {
             InitGameGrid();
         }
 
-        public void showCollisionmap(bool show) 
+        public void ShowCollisionmap(bool show) 
         {
-            showCollision = show;
-            for (int i = 0; i < jsonFile.tiles.Count; i++)
+            _showCollision = show;
+            for (int i = 0; i < _jsonHandler.Tiles().Count; i++)
             {
                 Grid currentGrid = (Grid)_editorGrid.Children[i];
-                if (showCollision)
+                if (_showCollision)
                 {
-                    if ((jsonFile.tiles[i].isObstacle == 0) && (jsonFile.tiles[i].id != 0))
+                    if ((_jsonHandler.Tiles()[i].isObstacle == 0) && (_jsonHandler.Tiles()[i].id != 0))
                         currentGrid.Background.Opacity = 0.3;
                 }
                 else
                 {
-                    if(jsonFile.tiles[i].id != 0)
+                    if(_jsonHandler.Tiles()[i].id != 0)
                         currentGrid.Background.Opacity = 1;
                 }
             }
@@ -156,7 +153,7 @@ namespace MapEditor.Handlers
 
 		private void InitGameGrid()
 		{
-            jsonFile.tiles.Clear();
+            _jsonHandler.Tiles().Clear();
             _editorGrid.Children.Clear();
 
 			for (int column = 0; column < Height(); column++)
@@ -177,7 +174,7 @@ namespace MapEditor.Handlers
 					childGrid.MouseLeftButtonDown += DrawToGridEvent;
 
 					_editorGrid.Children.Add(childGrid);
-                    jsonFile.tiles.Add(new Tile());
+                    _jsonHandler.Tiles().Add(new Tile());
 				}
 			}
 		}
@@ -200,7 +197,7 @@ namespace MapEditor.Handlers
 			if (e.LeftButton == MouseButtonState.Pressed)
 			{
 				currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(assetData.Image.ToArray()));
-                if(showCollision && !((bool)_propertyHandler._isObstacle.IsChecked))
+                if(_showCollision && !((bool)_propertyHandler.ObsticalCheckBox.IsChecked))
                 {
                     currentGrid.Background.Opacity = 0.3;
                 }
@@ -213,14 +210,14 @@ namespace MapEditor.Handlers
         {
             var assetData = _assetDatabaseHandler.GetAllRows();
             
-            for(int i = 0; i < jsonFile.tiles.Count; i++) {
+            for(int i = 0; i < _jsonHandler.Tiles().Count; i++) {
                 if (assetData == null) return;
 
                 Grid currentGrid = (Grid)_editorGrid.Children[i];
 
                 using (var enumerator = assetData.GetEnumerator())
 				while (enumerator.MoveNext()) {
-                    if(jsonFile.tiles[i].id == enumerator.Current.Id) {
+                    if(_jsonHandler.Tiles()[i].id == enumerator.Current.Id) {
                         currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(enumerator.Current.Image.ToArray()));
                     }
                 }
@@ -230,16 +227,16 @@ namespace MapEditor.Handlers
         private void addToJsonList(Grid g, Asset assetData)
         {
             //id
-            jsonFile.tiles[_editorGrid.Children.IndexOf(g)].id = assetData.Id;
+            _jsonHandler.Tiles()[_editorGrid.Children.IndexOf(g)].id = assetData.Id;
 
             //isObstacle
-            if ((bool)_propertyHandler._isObstacle.IsChecked)
+            if ((bool)_propertyHandler.ObsticalCheckBox.IsChecked)
             {
-                jsonFile.tiles[_editorGrid.Children.IndexOf(g)].isObstacle = 1;
+                _jsonHandler.Tiles()[_editorGrid.Children.IndexOf(g)].isObstacle = 1;
             }
             else
             {
-                jsonFile.tiles[_editorGrid.Children.IndexOf(g)].isObstacle = 0;
+                _jsonHandler.Tiles()[_editorGrid.Children.IndexOf(g)].isObstacle = 0;
             }
         }
 

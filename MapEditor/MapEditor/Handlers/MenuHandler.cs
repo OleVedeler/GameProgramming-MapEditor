@@ -15,15 +15,15 @@ namespace MapEditor.Handlers
         private readonly GameGridHandler _gameGridHandler;
         private readonly Menu _mainMenu;
         private readonly Grid _inputBox;
-        private ImportObject imp;
-        private bool showCollisions;
+        private ImportObject _imp;
+        private bool _showCollisions;
 
         public MenuHandler(Menu mainMenu, GameGridHandler gameGridHandler, Grid inputBox)
         {
             _gameGridHandler = gameGridHandler;
             _mainMenu = mainMenu;
             _inputBox = inputBox;
-            showCollisions = false;
+            _showCollisions = false;
             Init();
         }
 
@@ -68,30 +68,31 @@ namespace MapEditor.Handlers
 
         private void MenuItem_new(object sender, RoutedEventArgs e)
         {
-            _gameGridHandler.newMap();
+            _gameGridHandler.NewMap();
         }
         private void MenuItem_save(object sender, RoutedEventArgs e)
         {
-            _gameGridHandler.save();
+            _gameGridHandler.Save();
         }
         private void MenuItem_load(object sender, RoutedEventArgs e)
         {
-            _gameGridHandler.load();
+            _gameGridHandler.Load();
         }
         private void MenuItem_import(object sender, RoutedEventArgs e)
 		{
-            imp = new ImportObject();
-            OpenFileDialog file = new OpenFileDialog();
+            _imp = new ImportObject();
+            OpenFileDialog file = new OpenFileDialog
+            {
+	            DefaultExt = ".jpg",
+	            Filter = "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png"
+            };
 
-            file.DefaultExt = ".jpg";
-            file.Filter = "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png";
-
-            Nullable<bool> result = file.ShowDialog();
+	        bool? result = file.ShowDialog();
 
             if (result == true)
             {
                 string filename = file.FileName;
-                imp.filename = filename;
+                _imp.filename = filename;
 
                 _inputBox.Visibility = Visibility.Visible;
 
@@ -110,13 +111,14 @@ namespace MapEditor.Handlers
 
         private void YesClick(object sender, RoutedEventArgs e)
         {
-		    imp.parent = ((TextBox) _inputBox.FindName("InputParent")).Text;
-		    imp.name = ((TextBox) _inputBox.FindName("InputName")).Text;
+		    _imp.parent = ((TextBox) _inputBox.FindName("InputParent")).Text;
+		    _imp.name = ((TextBox) _inputBox.FindName("InputName")).Text;
 
-			Console.Write("Name: " + imp.name + " | Parent: " + imp.parent + " | Filename: " + imp.filename);
 
-            _inputBox.Visibility = Visibility.Collapsed; 
-			_gameGridHandler.import(imp);
+			if (_imp.name == "" || _imp.parent == "") return;
+            _inputBox.Visibility = Visibility.Collapsed;
+ 
+			_gameGridHandler.Import(_imp);
 
             ((TextBox)_inputBox.FindName("InputParent")).Text = "";
             ((TextBox)_inputBox.FindName("InputName")).Text = "";
@@ -129,8 +131,8 @@ namespace MapEditor.Handlers
 
         private void MenuItem_showCollisionmap(object sender, RoutedEventArgs e)
         {
-            showCollisions = !showCollisions;
-            _gameGridHandler.showCollisionmap(showCollisions);
+            _showCollisions = !_showCollisions;
+            _gameGridHandler.ShowCollisionmap(_showCollisions);
         }
     }
 }

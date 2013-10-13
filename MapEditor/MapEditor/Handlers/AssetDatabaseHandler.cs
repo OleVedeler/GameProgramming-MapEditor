@@ -12,40 +12,55 @@ namespace MapEditor.Handlers
 	class AssetDatabaseHandler
 	{
 		private readonly LinqToAssetDataContext _dataContext;
-
+		private List<Asset> _assetList; 
+		
 		public AssetDatabaseHandler()
 		{
 			_dataContext = new LinqToAssetDataContext();
+			GetFromDatabase();
 		}
 
-		public IQueryable<Asset> GetAllRows()
+		public List<Asset> GetAllRows()
 		{
-			var assets =(
+			return _assetList;
+		}
+
+		private void GetFromDatabase()
+		{
+			_assetList = (
 				from asset in _dataContext.Assets
 				select asset
-			);
+				).ToList();
+		}
 
-			return assets;
+		private Asset GetRowFromDatabase(string name)
+		{
+			return (
+				from asset in _dataContext.Assets
+				where asset.Name == name 
+				select asset
+				).First();
 		}
 
 		public Asset GetRowBy(String name)
 		{
-			var assetData = (
-			from asset in _dataContext.Assets
-			where asset.Name == name
-			select asset);
-
-			return assetData.AsEnumerable().Any() ? assetData.First() : null;
+			for (int i = 0; i < _assetList.Count; i++)
+			{
+				if(_assetList[i].Name == name)
+				return _assetList[i];	
+			}
+			return null;
 		}
 
 		public Asset GetRowBy(int id)
 		{
-			var assetData = (
-			from asset in _dataContext.Assets
-			where asset.Id == id
-			select asset);
+			for (int i = 0; i < _assetList.Count; i++)
+			{
+				if (_assetList[i].Id == id)
+					return _assetList[i];
+			}
+			return null;
 
-			return assetData.AsEnumerable().Any() ? assetData.First() : null;
 		} 
 
 		public void DeleteAll()
@@ -65,17 +80,7 @@ namespace MapEditor.Handlers
 
 		public bool Contains(string name)
 		{
-			var assets = GetAllRows();
-
-			using (var enumerator = assets.GetEnumerator())
-				while (enumerator.MoveNext())
-				{
-					if (enumerator.Current.Name.Trim(' ') == name.Trim(' '))
-					{
-						return true;
-					}
-				}
-			return false;
+			return _assetList.Any(t => t.Name.Trim(' ') == name.Trim(' '));
 		}
 
 		public void Add(ImportObject i)
@@ -84,19 +89,22 @@ namespace MapEditor.Handlers
 			Asset newAsset = new Asset();
 			BitmapImage bitmapImage = new BitmapImage(new Uri(i.filename));
 
-
 			newAsset.Name = i.name;
 			newAsset.Parent = i.parent;
 			newAsset.Image = EncodeImage(bitmapImage);
 
 
-
+			
 			_dataContext.Assets.InsertOnSubmit(newAsset);
-
+			
 			//todo: håndtere navn duplikater
 			// legger inn 2 assets i databasen for en 
 			// eller annen grunn når du importer mer en en hver gang
 			_dataContext.SubmitChanges();
+
+			// Trengs for å få med indexen
+			_assetList.Add(GetRowFromDatabase(newAsset.Name));
+			
 		}
 
 		public Byte[] EncodeImage(BitmapImage image)
