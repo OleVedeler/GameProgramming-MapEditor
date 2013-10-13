@@ -15,7 +15,7 @@ namespace MapEditor
 		public MainWindow()
 		{
 			InitializeComponent();
-            PropertyHandler propertyHandler = new PropertyHandler(isObstacle, nameText, pathText);
+            PropertyHandler propertyHandler = new PropertyHandler(PropertyBox, "Nothing");
 			AssetDatabaseHandler assetDatabaseHandler = new AssetDatabaseHandler();
 			ImageHandler imageHandler = new ImageHandler(ShowcaseAsset, assetDatabaseHandler);
 			TreeViewHandler treeViewHandler = new TreeViewHandler(ComponentsTreeView, assetDatabaseHandler, imageHandler, propertyHandler);

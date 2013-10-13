@@ -12,7 +12,7 @@ namespace MapEditor.Handlers
 {
 	class TreeViewHandler
 	{
-		public readonly TreeView _treeView;
+		private readonly TreeView _treeView;
 		private readonly AssetDatabaseHandler _assetDatabaseHandler;
 		private readonly ImageHandler _imageHandler;
         private readonly PropertyHandler _propertyHandler;
@@ -29,18 +29,25 @@ namespace MapEditor.Handlers
             _propertyHandler = propertyHandler;
 			Init();
 
+			_propertyHandler.ObsticalCheckBox.Checked += ObsticalCheckBox_Checked;
+			_propertyHandler.ObsticalCheckBox.Unchecked += ObsticalCheckBox_Checked;
 			_treeView.SelectedItemChanged += TreeViewOnSelectedItemChanged;
+
 		}
 
 		private void TreeViewOnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> routedPropertyChangedEventArgs)
 		{
+			_propertyHandler.SetVisability(false);
             if (SelectedItem() == null) return;
 			Asset tempAsset = _assetDatabaseHandler.GetRowBy(((TreeViewItem) SelectedItem()).Header.ToString());
 			if (tempAsset == null) return;
 			_imageHandler.ShowcaseAsset(tempAsset);
+	
+			// Setter checkboxen på elementet og i property menyen til det samme.
+			_propertyHandler.ObsticalCheckBox.IsChecked = ((SelectedItem() as TreeItem).ContextMenu.Items[0] as MenuItem).IsChecked;
+			(_propertyHandler.PropertyBox.Items[0] as ListBoxItem).Content = ((SelectedItem() as TreeItem).PropertyHandler.Name);
 
-            //_propertyHandler._nameText.Text = "Name: " + tempAsset.Name;
-            //_propertyHandler._pathText.Text = "Path: " + tempAsset.Image;
+			_propertyHandler.SetVisability(true);
 		}
 
 		public object SelectedItem()
@@ -59,21 +66,16 @@ namespace MapEditor.Handlers
 		{
 			TreeItem newItem = new TreeItem (newAsset.Name);
 			newItem.OnClickEvent += TreeItemOnClickEvent;
-			TreeItem parentItem = new TreeItem(newAsset.Parent);
-			parentItem.OnClickEvent += TreeItemOnClickEvent;
+			TreeViewItem parentItem = new TreeViewItem {Header = newAsset.Parent};
 
 			if (_treeView.Items.Count != 0)
 			{
-				//_treeView.Items.Add(parentItem);
 				// Legger treet inn i listen
 				List<TreeViewItem> treeViewList = _treeView.Items.Cast<TreeViewItem>().ToList();
 
-				//newItem.MouseRightButtonUp += RightButtonClick;
 				// returnerer hvis den har lagt til elementet
 				for (int i = 0; i < _treeView.Items.Count; i++)
 				{
-					// Todo: Fix Feil med spacing. 
-					// eks. Landskap og Landskap2 vil bli det samme grunnet Contains
 					if ((((string) treeViewList[i].Header).TrimEnd(' ') != (parentItem.Header.ToString().TrimEnd(' '))))
 						continue;
 
@@ -81,38 +83,51 @@ namespace MapEditor.Handlers
 					return;
 				}
 			}
-
-			_treeView.Items.Add((TreeViewItem)parentItem);
-			parentItem.Items.Add((TreeViewItem)newItem);
+			_treeView.Items.Add(parentItem);
+			parentItem.Items.Add(newItem);
 		}
 
 		private void TreeItemOnClickEvent(object sender, RoutedEventArgs routedEventArgs)
 		{
-			_treeView.Items.Remove(sender);
+			if (((MenuItem)sender).Header.ToString() == "_Delete")
+			{
+				RemoveAsset(sender);
+			}
+			if (((MenuItem)sender).Header.ToString() == "_Set as obsticel")
+			{
+				_propertyHandler.ObsticalCheckBox.IsChecked = ((SelectedItem() as TreeItem).ContextMenu.Items[0] as MenuItem).IsChecked;
+			}
+		}
 
+		private void ObsticalCheckBox_Checked(object sender, RoutedEventArgs e)
+		{
+			((SelectedItem() as TreeItem).ContextMenu.Items[0] as MenuItem).IsChecked = (bool)_propertyHandler.ObsticalCheckBox.IsChecked;
+		}
+
+
+		private void RemoveAsset(object sender)
+		{
+			_assetDatabaseHandler.Delete(((TreeViewItem)SelectedItem()).Header.ToString());
+			TreeViewItem tempItem = new TreeViewItem();
 			foreach (TreeViewItem treeView in _treeView.Items)
 			{
-				treeView.Items.Remove(sender);				
-			}
-
-			if (((TreeViewItem)sender).HasItems)
-			{
-				foreach (var assets in ((TreeViewItem)sender).Items)
+				treeView.Items.Remove(SelectedItem());
+				if (!treeView.HasItems)
 				{
-					_assetDatabaseHandler.Delete(((TreeViewItem)assets).Header.ToString());
+					tempItem = treeView;
 				}
 			}
-			_assetDatabaseHandler.Delete(((TreeViewItem)sender).Header.ToString());
-
+			// Removes parent that are empty
+			_treeView.Items.Remove(tempItem);	
 		}
 
 		private void Init()
 		{
 			var assetData = _assetDatabaseHandler.GetAllRows();
-
-			using (var enumerator = assetData.GetEnumerator())
-				while (enumerator.MoveNext())
-					Add(enumerator.Current);
+			foreach (var asset in assetData)
+			{
+				Add(asset);
+			}			
 		}
 
 		public void Update()

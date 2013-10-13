@@ -197,7 +197,7 @@ namespace MapEditor.Handlers
 			if (e.LeftButton == MouseButtonState.Pressed)
 			{
 				currentGrid.Background = new ImageBrush(_assetDatabaseHandler.DecodeImage(assetData.Image.ToArray()));
-                if(_showCollision && !((bool)_propertyHandler._isObstacle.IsChecked))
+                if(_showCollision && !((bool)_propertyHandler.ObsticalCheckBox.IsChecked))
                 {
                     currentGrid.Background.Opacity = 0.3;
                 }
@@ -230,7 +230,7 @@ namespace MapEditor.Handlers
             _jsonFile.tiles[_editorGrid.Children.IndexOf(g)].id = assetData.Id;
 
             //isObstacle
-            if ((bool)_propertyHandler._isObstacle.IsChecked)
+            if ((bool)_propertyHandler.ObsticalCheckBox.IsChecked)
             {
                 _jsonFile.tiles[_editorGrid.Children.IndexOf(g)].isObstacle = 1;
             }

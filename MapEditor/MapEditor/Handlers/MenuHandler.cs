@@ -81,12 +81,13 @@ namespace MapEditor.Handlers
         private void MenuItem_import(object sender, RoutedEventArgs e)
 		{
             _imp = new ImportObject();
-            OpenFileDialog file = new OpenFileDialog();
+            OpenFileDialog file = new OpenFileDialog
+            {
+	            DefaultExt = ".jpg",
+	            Filter = "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png"
+            };
 
-            file.DefaultExt = ".jpg";
-            file.Filter = "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png";
-
-            Nullable<bool> result = file.ShowDialog();
+	        bool? result = file.ShowDialog();
 
             if (result == true)
             {

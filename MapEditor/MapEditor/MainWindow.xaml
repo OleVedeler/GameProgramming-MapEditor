@@ -13,12 +13,8 @@
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
-        <ListBox Margin="10,363,585,25" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <CheckBox x:Name="isObstacle" Content="Is Obstacle" Height="27" Width="127" FlowDirection="RightToLeft" HorizontalContentAlignment="Right"/>
-            <TextBlock x:Name="nameText" TextWrapping="Wrap" Height="26" Width="117"><Run Text="Asset "/><Run Text="Name"/></TextBlock>
-            <TextBlock x:Name="pathText" TextWrapping="Wrap" Text="Asset Path" Height="26" Width="117"/>
-        </ListBox>
-
+        <ListBox x:Name="PropertyBox"  Margin="10,363,585,25" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+</ListBox>
         <Image Name="ShowcaseAsset" Margin="25,228,598,122"/>
         <Grid x:Name="inputBox" Visibility="Collapsed">
             <Grid Background="LightGray" Opacity="0.5"/>

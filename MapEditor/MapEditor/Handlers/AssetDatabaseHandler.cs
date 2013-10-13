@@ -44,21 +44,11 @@ namespace MapEditor.Handlers
 
 		public Asset GetRowBy(String name)
 		{
-
-
 			for (int i = 0; i < _assetList.Count; i++)
 			{
 				if(_assetList[i].Name == name)
 				return _assetList[i];	
 			}
-			
-			/*
-			using(var enumerator = _assetList.GetEnumerator())
-				while (enumerator.MoveNext())
-				{
-					if(enumerator.Current.Name == name)
-						return enumerator.Current;
-				}*/
 			return null;
 		}
 
@@ -70,16 +60,6 @@ namespace MapEditor.Handlers
 				if (_assetList[i].Id == id)
 					return _assetList[i];
 			}
-
-			/*
-			using (var enumerator = _assetList.GetEnumerator())
-				while (enumerator.MoveNext())
-				{
-					if (enumerator.Current.Id == id)
-						return enumerator.Current;
-				}
-			 * 
-			 * */
 			return null;
 
 		} 
