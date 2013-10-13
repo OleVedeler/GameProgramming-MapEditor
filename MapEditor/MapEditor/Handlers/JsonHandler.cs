@@ -20,7 +20,7 @@ namespace MapEditor.Handlers
 			_jsonFile = new JSON();
 		}
 		/// <summary>
-		/// Serializes the jasonfile
+		/// Serializes the jsonfile
 		/// </summary>
 		/// <returns></returns>
 		public string JsonString()
