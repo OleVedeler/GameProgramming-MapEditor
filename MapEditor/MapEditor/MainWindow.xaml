@@ -1,7 +1,7 @@
 ﻿<Window x:Class="MapEditor.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="500" Width="750" ResizeMode="NoResize" >
+        Title="Map Editor" Height="500" Width="750" ResizeMode="NoResize" >
     <Grid>
         <Menu Name="MainMenu" IsMainMenu="True"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,362,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52"><Run Language="nb-no" Text="Properties"/></TextBlock>
