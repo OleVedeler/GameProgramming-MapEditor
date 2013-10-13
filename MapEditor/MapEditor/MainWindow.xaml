@@ -17,7 +17,7 @@
         </TreeView>
         <ListBox x:Name="PropertyBox"  Margin="10,363,585,25" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
         </ListBox>
-        <Image Name="ShowcaseAsset" Margin="25,228,598,122"/>
+        <Image Name="ShowcaseAsset" Margin="25,240,598,122"/>
         <Grid x:Name="inputBox" Visibility="Collapsed">
             <Grid Background="LightGray" Opacity="0.5"/>
             <Border
