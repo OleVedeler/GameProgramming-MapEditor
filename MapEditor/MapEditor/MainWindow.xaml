@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="500" Width="750" ResizeMode="NoResize" >
     <Grid>
-        <Menu Name="MainMenu" IsMainMenu="True"></Menu>
+        <Menu Name="MainMenu" IsMainMenu="True"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,362,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52"><Run Language="nb-no" Text="Properties"/></TextBlock>
         <Grid Name="EditorGrid" HorizontalAlignment="Left" Height="425" Margin="175,23,0,0" VerticalAlignment="Top" Width="550" Background="White">
+
         </Grid>
         <TreeView Name="ComponentsTreeView" HorizontalAlignment="Left" Height="192" Margin="10,23,0,0" VerticalAlignment="Top" Width="147">
             <TreeView.ItemContainerStyle>
@@ -13,13 +15,11 @@
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
-        <ListBox Margin="10,363,585,25" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+        <ListBox Margin="10,379,585,25" ScrollViewer.HorizontalScrollBarVisibility="Auto" Padding="5">
             <CheckBox x:Name="isObstacle" Content="Is Obstacle" Height="27" Width="127" FlowDirection="RightToLeft" HorizontalContentAlignment="Right"/>
-            <TextBlock x:Name="nameText" TextWrapping="Wrap" Height="26" Width="117"><Run Text="Asset "/><Run Text="Name"/></TextBlock>
-            <TextBlock x:Name="pathText" TextWrapping="Wrap" Text="Asset Path" Height="26" Width="117"/>
         </ListBox>
 
-        <Image Name="ShowcaseAsset" Margin="25,228,598,122"/>
+        <Image Name="ShowcaseAsset" Margin="25,240,598,122"/>
         <Grid x:Name="inputBox" Visibility="Collapsed">
             <Grid Background="LightGray" Opacity="0.5"/>
             <Border
@@ -42,5 +42,6 @@
                 </StackPanel>
             </Border>
         </Grid>
+    <TextBlock HorizontalAlignment="Left" Margin="10,222,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52"><Run Language="nb-no" Text="Preview"/></TextBlock>
     </Grid>
 </Window>

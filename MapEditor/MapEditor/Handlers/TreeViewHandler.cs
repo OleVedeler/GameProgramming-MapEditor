@@ -38,9 +38,6 @@ namespace MapEditor.Handlers
 			Asset tempAsset = _assetDatabaseHandler.GetRowBy(((TreeViewItem) SelectedItem()).Header.ToString());
 			if (tempAsset == null) return;
 			_imageHandler.ShowcaseAsset(tempAsset);
-
-            //_propertyHandler._nameText.Text = "Name: " + tempAsset.Name;
-            //_propertyHandler._pathText.Text = "Path: " + tempAsset.Image;
 		}
 
 		public object SelectedItem()

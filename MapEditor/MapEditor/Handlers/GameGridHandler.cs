@@ -105,6 +105,7 @@ namespace MapEditor.Handlers
             {
                 try
                 {
+                    
                     if ((stream = open.OpenFile()) != null)
                     {
                         using (stream)
@@ -124,6 +125,8 @@ namespace MapEditor.Handlers
                 {
                     Console.WriteLine("Error: Could not read file from disk. Original error: " + ex.Message);
                 }
+
+                
             }
         }
 

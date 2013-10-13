@@ -10,14 +10,10 @@ namespace MapEditor.Handlers
     class PropertyHandler
     {
         public CheckBox _isObstacle;
-        public TextBlock _nameText;
-        public TextBlock _pathText;
 
-        public PropertyHandler(CheckBox isObstacle, TextBlock nameText, TextBlock pathText)
+        public PropertyHandler(CheckBox isObstacle)
         {
             _isObstacle = isObstacle;
-            _nameText = nameText;
-            _pathText = pathText;
         }
     }
 }
